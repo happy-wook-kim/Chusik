@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
-import Home from './view/Home'
 import './App.css'
 import './scss/normalize.scss'  
-import Test from './view/test/Test'
+import Home from './view/Home'
+import NotFound from './layout/NotFound'
+import Restaurants from './view/restaurants'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,8 +14,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='/test' element={<Test />}></Route>
+          <Route path='/' element={<Home />} />
+          <Route path='/restaurants' element={<Restaurants />} />
+          <Route path='/*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
 
