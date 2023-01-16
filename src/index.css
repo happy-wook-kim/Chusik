@@ -68,3 +68,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* 커스텀 */
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+h1,h2,h3,h4,h5 {
+  margin: 0 !important;
+}
+
+* {
+  box-sizing: border-box;
+}
