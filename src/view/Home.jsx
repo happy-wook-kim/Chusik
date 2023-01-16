@@ -7,8 +7,13 @@ export default function Home() {
 
   return(
     <div>
-      <h1>HOME!</h1>
-      <Link to="/test">TEST</Link>
+      <h1>HELLO THIS IS CHU SIK</h1>
+      <Link to="/restaurants">
+        <button>Go</button>
+      </Link>
+      <Link to="/restaurant">
+        <button>Go 404</button>
+      </Link>
     </div>
   )
 }
