@@ -2,7 +2,7 @@
   --footer-height: 50px;
   --header-height: 60px;
   --body-width: 480px;
-  --body-margin: var(--header-height) 0 var(--body-margin-bottom) 100px;
+  --body-margin: 0 0 0 100px;
   --body-margin-bottom: 30px
 }
 
@@ -23,7 +23,7 @@
 
 .body {
   width: var(--body-width);
-  min-height: calc(100vh - var(--footer-height) - 60px);
+  min-height: calc(100vh);
   padding: var(--header-height) 30px 0;
   margin: var(--body-margin);
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
