@@ -3,11 +3,7 @@ import BottomNavigation from "../components/layout/BottomNavigation"
 import styles from "./Layout.module.scss"
 
 export default function BasicLayout(){
-  const layoutStyle = {
-    display: "flex",
-    "justify-content": "center",
-    "align-items": "center",
-  }
+
   return (
     <>
       <div className={styles.background}/>
@@ -15,9 +11,7 @@ export default function BasicLayout(){
         <section className={styles.body}>
           <Outlet />
         </section>
-        {/* <footer className={styles.footer}>
-          <BottomNavigation />
-        </footer> */}
+        <BottomNavigation />
       </div>
     </>
   )
