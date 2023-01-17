@@ -1,0 +1,9 @@
+// responsive
+@mixin responsive($range) {
+  @if ($range == sm) { @media (min-width: 576px) { @content; } }
+  @else if ($range == md) { @media (min-width: 768px) { @content; } }
+  @else if ($range == lg) { @media (min-width: 992px) { @content; } }
+  @else if ($range == xl) { @media (min-width: 1200px) { @content; } }
+  @else if ($range == xxl) { @media (min-width: 1600px) { @content; } }
+  @else if ($range == xxxl) { @media (min-width: 2000px) { @content; } }
+}
