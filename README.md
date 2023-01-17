@@ -5,14 +5,13 @@
 
 ===
 홈페이지 : http://chu.banpick.kr
-
+===
 
 
 ```
 npm i
 
 npm run dev
-
 ```
 포트번호 8470
 
