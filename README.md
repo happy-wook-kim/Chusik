@@ -12,7 +12,7 @@ npm i
 
 npm run dev
 ```
-포트번호 8470
+
 
 
 
