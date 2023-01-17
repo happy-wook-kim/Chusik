@@ -15,8 +15,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path={'/'} element={<BasicLayout />}>
           <Route path={'/'} element={<Home />} />
           <Route path={'/restaurants'} element={<Restaurants />} />
+          <Route path={'/*'} element={<NotFound />} />
         </Route>
-        <Route path={'/*'} element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
