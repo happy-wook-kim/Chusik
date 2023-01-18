@@ -1,43 +1,63 @@
 import styles from "./BottomNavigation.module.scss"
 import { useState } from "react"
+import { useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 export default function BottomNavigation() {
+  const location = useLocation();
   const [navi, setNavi] = useState([
     {
       index: 0,
-      value: true,
+      value: false,
       title: '식당 찾기',
-      src: new URL('../../assets/map.svg', import.meta.url).href
+      src: new URL('../../assets/map.svg', import.meta.url).href,
+      url: '/restaurants'
     },
     {
       index: 1,
       value: false,
       title: '즐겨찾기',
-      src: new URL('../../assets/bookmark.svg', import.meta.url).href
+      src: new URL('../../assets/bookmark.svg', import.meta.url).href,
+      url: '/favorites'
     },
     {
       index: 2,
       value: false,
       title: '설정',
-      src: new URL('../../assets/settings.svg', import.meta.url).href
+      src: new URL('../../assets/settings.svg', import.meta.url).href,
+      url: '/settings'
     }
   ])
-
-  const onClick = (a) => {
-    console.log('13123')
-    console.log(a.target)
-  }
 
   return (
     <div className={styles.navigation}>
       {navi?.map((item, i) => 
         <section key={item.index}>
-          <button className={item.value ? 'active' : 'none'} onClick={onClick}>
-            <img src={item.src} />
-            {item.title}
-          </button>
+          <Link to={item.url}> 
+            <button 
+              className={location.pathname.includes(item.url) ? styles.buttonActive : 'none'} 
+              item-index={i}>
+              <img src={item.src} />
+              {item.title}
+            </button>
+          </Link>
         </section>
       )}
     </div>
   )
+
+  let nextId = 0;
+
+  const [name, setName] = useState('');
+  const [artists, setArtists] = useState([]);
+
+  return (
+      <button onClick={() => {
+        setName('');
+        artists.push({
+          id: nextId++,
+          name: name,
+        });
+      }}>Add</button>
+  );
 }
