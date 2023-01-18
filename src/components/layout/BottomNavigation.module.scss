@@ -1,9 +1,5 @@
 @import "../../scss/mixins.scss";
-
-:root {
-  --body-width: 480px;
-  --body-margin: 0 0 0 100px;
-}
+@import "../../scss/variables.scss";
 
 .navigation {
   display: grid;
@@ -12,6 +8,7 @@
   bottom: 0;
   width: 100%;
   justify-content: space-around;
+  column-gap: 1px;
   
   section {
     display: flex;
@@ -39,7 +36,7 @@
   }
 
   @include responsive(sm){
-    width: var(--body-width);
-    margin: var(--body-margin);
+    width: $--body-width;
+    margin: $--body-margin;
   }
 }
