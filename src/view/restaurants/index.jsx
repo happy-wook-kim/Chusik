@@ -11,109 +11,119 @@ export default function Restaurants() {
   storeMarkers = [] // 편의점 마커 객체를 가지고 있을 배열입니다
 
   useEffect(()=>{
-    const map = initMap()
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_KEY}&autoload=false`;
+    document.head.appendChild(script);
 
-    /**
-     * marker
-     */
-    markerData.forEach((marker) => {
-      // 마커를 생성합니다
-      const markers = new kakao.maps.Marker({
-        //마커가 표시 될 지도
-        map: map,
-        //마커가 표시 될 위치
-        position: new kakao.maps.LatLng(marker.lat, marker.lng),
-        //마커에 hover시 나타날 title
-        title: marker.title,
-      });
-
-      const infoWindow = new kakao.maps.InfoWindow({
-        // map: map,
-        content: `<div style="padding:5px; font-size:0.85rem;">${marker.title}</div>`,
-        position: new kakao.maps.LatLng(marker.lat, marker.lng),
-        // removable: true
-      })
-
-      kakao.maps.event.addListener(markers, 'mouseover', makeOverListener(map, markers, infoWindow))
-  
-      kakao.maps.event.addListener(markers, 'mouseout', makeOutListener(infoWindow))
-    });
+    script.onload = () => {
+      kakao.maps.load(() => {
+        const map = initMap()
     
-    createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
-    createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
-
-    // changeMarker('coffee'); // 지도에 커피숍 마커가 보이도록 설정합니다   
+        /**
+         * marker
+         */
+        markerData.forEach((marker) => {
+          // 마커를 생성합니다
+          const markers = new kakao.maps.Marker({
+            //마커가 표시 될 지도
+            map: map,
+            //마커가 표시 될 위치
+            position: new kakao.maps.LatLng(marker.lat, marker.lng),
+            //마커에 hover시 나타날 title
+            title: marker.title,
+          });
     
-    // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
-    function createCoffeeMarkers() {
-      for (var i = 0; i < coffeePositions.length; i++) {  
-        var imageSize = new kakao.maps.Size(22, 26),
-            imageOptions = {  
-              spriteOrigin: new kakao.maps.Point(10, 0),    
-              spriteSize: new kakao.maps.Size(36, 98)  
-            };     
-        
-        // 마커이미지와 마커를 생성합니다
-        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-            marker = createMarker(coffeePositions[i], markerImage);  
-        
-        // 생성된 마커를 커피숍 마커 배열에 추가합니다
-        coffeeMarkers.push(marker);
-      }     
-    }
-
-    // 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
-    function createStoreMarkers() {
-      for (var i = 0; i < storePositions.length; i++) {
-        var imageSize = new kakao.maps.Size(22, 26),
-            imageOptions = {   
-              spriteOrigin: new kakao.maps.Point(10, 36),    
-              spriteSize: new kakao.maps.Size(36, 98)  
-            };       
+          const infoWindow = new kakao.maps.InfoWindow({
+            // map: map,
+            content: `<div style="padding:5px; font-size:0.85rem;">${marker.title}</div>`,
+            position: new kakao.maps.LatLng(marker.lat, marker.lng),
+            // removable: true
+          })
     
-        // 마커이미지와 마커를 생성합니다
-        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-            marker = createMarker(storePositions[i], markerImage);  
-
-        // 생성된 마커를 편의점 마커 배열에 추가합니다
-        storeMarkers.push(marker);    
-      }        
-    }
-
-    // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
-    function changeMarker(type){
-      var coffeeMenu = document.getElementById('coffeeMenu');
-      var storeMenu = document.getElementById('storeMenu');
+          kakao.maps.event.addListener(markers, 'mouseover', makeOverListener(map, markers, infoWindow))
       
-      // 커피숍 카테고리가 클릭됐을 때
-      if (type === 'coffee') {
-        // 커피숍 카테고리를 선택된 스타일로 변경하고
-        coffeeMenu.className = 'menu_selected';
+          kakao.maps.event.addListener(markers, 'mouseout', makeOutListener(infoWindow))
+        });
         
-        // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-        storeMenu.className = '';
-        
-        // 커피숍 마커들만 지도에 표시하도록 설정합니다
-        setCoffeeMarkers(map);
-        setStoreMarkers(null);
-      } else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때   
-        // 편의점 카테고리를 선택된 스타일로 변경하고
-        coffeeMenu.className = '';
-        storeMenu.className = 'menu_selected';
-        
-        // 편의점 마커들만 지도에 표시하도록 설정합니다
-        setCoffeeMarkers(null);
-        setStoreMarkers(map);
-      }  
-    } 
+        createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
+        createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
     
+        // changeMarker('coffee'); // 지도에 커피숍 마커가 보이도록 설정합니다   
+        
+        // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
+        function createCoffeeMarkers() {
+          for (var i = 0; i < coffeePositions.length; i++) {  
+            var imageSize = new kakao.maps.Size(22, 26),
+                imageOptions = {  
+                  spriteOrigin: new kakao.maps.Point(10, 0),    
+                  spriteSize: new kakao.maps.Size(36, 98)  
+                };     
+            
+            // 마커이미지와 마커를 생성합니다
+            var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+                marker = createMarker(coffeePositions[i], markerImage);  
+            
+            // 생성된 마커를 커피숍 마커 배열에 추가합니다
+            coffeeMarkers.push(marker);
+          }     
+        }
+    
+        // 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
+        function createStoreMarkers() {
+          for (var i = 0; i < storePositions.length; i++) {
+            var imageSize = new kakao.maps.Size(22, 26),
+                imageOptions = {   
+                  spriteOrigin: new kakao.maps.Point(10, 36),    
+                  spriteSize: new kakao.maps.Size(36, 98)  
+                };       
+        
+            // 마커이미지와 마커를 생성합니다
+            var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+                marker = createMarker(storePositions[i], markerImage);  
+    
+            // 생성된 마커를 편의점 마커 배열에 추가합니다
+            storeMarkers.push(marker);    
+          }        
+        }
+    
+        // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
+        function changeMarker(type){
+          var coffeeMenu = document.getElementById('coffeeMenu');
+          var storeMenu = document.getElementById('storeMenu');
+          
+          // 커피숍 카테고리가 클릭됐을 때
+          if (type === 'coffee') {
+            // 커피숍 카테고리를 선택된 스타일로 변경하고
+            coffeeMenu.className = 'menu_selected';
+            
+            // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
+            storeMenu.className = '';
+            
+            // 커피숍 마커들만 지도에 표시하도록 설정합니다
+            setCoffeeMarkers(map);
+            setStoreMarkers(null);
+          } else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때   
+            // 편의점 카테고리를 선택된 스타일로 변경하고
+            coffeeMenu.className = '';
+            storeMenu.className = 'menu_selected';
+            
+            // 편의점 마커들만 지도에 표시하도록 설정합니다
+            setCoffeeMarkers(null);
+            setStoreMarkers(map);
+          }  
+        } 
+        
+        /**
+         * event
+         */
+        kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
+            alert(mouseEvent.latLng.toString());
+          });
+      })
+    }
 
-    /**
-     * event
-     */
-    kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-        alert(mouseEvent.latLng.toString());
-      });
     }, [])
 
 
@@ -221,7 +231,6 @@ export default function Restaurants() {
     e.target.setAttribute('active','')
     e.target.querySelector('img').setAttribute('active','')
     e.target.querySelector('span').setAttribute('active','')
-    console.log(e.target)
   }
 
   return (
@@ -229,9 +238,9 @@ export default function Restaurants() {
       <section className={styles.map} id="map" />
       <div className={styles.category}>
         <ul>
-          <li id="coffeeMenu" onClick={test}>
-            <img src={coffee} />
-            <span>커피</span>
+          <li id="coffeeMenu" onClick={test} active="">
+            <img src={coffee} active=""/>
+            <span active="">커피</span>
           </li>
           <li id="storeMenu" onClick={test}>
             <img src={store} />
