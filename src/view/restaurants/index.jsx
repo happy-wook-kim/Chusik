@@ -19,8 +19,13 @@ export default function Restaurants() {
 
     script.onload = () => {
       kakao.maps.load(() => {
+        const background = document.querySelector('#loading_background')
+        const loading = document.querySelector('#loading')
+        background.removeAttribute('active')
+        loading.removeAttribute('active')
+
         const map = initMap()
-    
+
         /**
          * marker
          */
@@ -235,6 +240,8 @@ export default function Restaurants() {
 
   return (
     <div>
+      <div id="loading_background" className={styles.loading_background} active=""></div>
+      <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" />
       <div className={styles.category}>
         <ul>
