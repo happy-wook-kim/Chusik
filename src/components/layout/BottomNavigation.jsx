@@ -35,7 +35,7 @@ export default function BottomNavigation() {
         <section key={item.index}>
           <Link to={item.url}> 
             <button 
-              className={location.pathname.includes(item.url) ? styles.buttonActive : 'none'} 
+              className={location.pathname.includes(item.url) ? styles.buttonActive : ''} 
               item-index={i}>
               <img src={item.src} />
               {item.title}
@@ -45,19 +45,4 @@ export default function BottomNavigation() {
       )}
     </div>
   )
-
-  let nextId = 0;
-
-  const [name, setName] = useState('');
-  const [artists, setArtists] = useState([]);
-
-  return (
-      <button onClick={() => {
-        setName('');
-        artists.push({
-          id: nextId++,
-          name: name,
-        });
-      }}>Add</button>
-  );
 }
