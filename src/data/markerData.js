@@ -124,9 +124,9 @@ export const storeData = [
 ];
 
 export const categoryImg = {
-  'restaurant': '/chusik_64x64.png',
-  'store': '../../src/assets/store.png',
-  'home': '../../src/assets/home.png',
-  'cafe': '../../src/assets/cafe.png',
-  'building': '../../src/assets/building.png',
+  'restaurant': new URL('/chusik_64x64.png', import.meta.url).href,
+  'store': new URL('../../src/assets/store.png', import.meta.url).href,
+  'home': new URL('../../src/assets/home.png', import.meta.url).href,
+  'cafe': new URL('../../src/assets/cafe.png', import.meta.url).href,
+  'building': new URL('../../src/assets/building.png', import.meta.url).href,
 }
