@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { markerData, coffeeData, storeData, categoryImg } from "../../data/markerData";
 import store from "../../assets/store.svg"
 import coffee from "../../assets/coffee.svg"
+import all from "../../assets/all.svg"
 
 export default function Restaurants() {    
   let map, markers = [], i = 0, markerImage
@@ -122,10 +123,14 @@ export default function Restaurants() {
   function showMarkers(id) {
     console.log(id)
     for (var i = 0; i < markers.length; i++) {
-      if(id === markers[i].category) {
+      if(id === 'all') {
         markers[i].marker.setMap(map);
       }else {
-        markers[i].marker.setMap(null);
+        if(id === markers[i].category) {
+          markers[i].marker.setMap(map);
+        }else {
+          markers[i].marker.setMap(null);
+        }
       }
     }            
   }
@@ -139,6 +144,7 @@ export default function Restaurants() {
       child.querySelector('span').removeAttribute('active')
     })
 
+    console.log(target)
     target.setAttribute('active','')
     target.querySelector('img').setAttribute('active','')
     target.querySelector('span').setAttribute('active','')
@@ -153,9 +159,13 @@ export default function Restaurants() {
       <section className={styles.map} id="map" />
       <div className={styles.category}>
         <ul>
-          <li id="cafe" onClick={changeMarker} active="">
-            <img src={coffee} active=""/>
-            <span active="">카페</span>
+          <li id="all" active="" onClick={changeMarker}>
+            <img src={all} active=""/>
+            <span active="">전체</span>
+          </li>
+          <li id="cafe" onClick={changeMarker}>
+            <img src={coffee} />
+            <span>카페</span>
           </li>
           <li id="store" onClick={changeMarker}>
             <img src={store} />
