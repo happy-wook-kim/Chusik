@@ -27,7 +27,7 @@ export const markerData = [
 ]
 
 // 커피숍 마커가 표시될 좌표 배열입니다
-export const coffeePositions = [ 
+export const coffeeData = [ 
   {
     title: '1번 커피',
     lat: 37.498553760499505,
@@ -66,7 +66,7 @@ export const coffeePositions = [
 ];
 
 // 편의점 마커가 표시될 좌표 배열입니다
-export const storePositions = [
+export const storeData = [
   {
     title: '1번 스토어',
     lat: 37.49996818951873,

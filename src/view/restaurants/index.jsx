@@ -1,14 +1,14 @@
 import infoStore from "../../stores/info";
 import styles from "./restaurant.module.scss"
 import { useEffect } from 'react'
-import { markerData, coffeePositions, storePositions } from "../../data/markerData";
+import { markerData, coffeeData, storeData } from "../../data/markerData";
 import store from "../../assets/store.svg"
 import coffee from "../../assets/coffee.svg"
 
 export default function Restaurants() {
-  const markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-  let coffeeMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
-  storeMarkers = [] // 편의점 마커 객체를 가지고 있을 배열입니다
+  var imageSrc = '../../../public/chusik_64x64.png' // 마커이미지의 주소입니다    
+    
+  let map, markers = [], i = 0, markerImage
 
   useEffect(()=>{
     const script = document.createElement("script");
@@ -19,120 +19,36 @@ export default function Restaurants() {
 
     script.onload = () => {
       kakao.maps.load(() => {
-        const background = document.querySelector('#loading_background')
-        const loading = document.querySelector('#loading')
-        background.removeAttribute('active')
-        loading.removeAttribute('active')
-
-        const map = initMap()
+        map = initMap()
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        markerImage = new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(32, 32))
 
         /**
          * marker
          */
         markerData.forEach((marker) => {
           // 마커를 생성합니다
-          const markers = new kakao.maps.Marker({
-            //마커가 표시 될 지도
-            map: map,
-            //마커가 표시 될 위치
-            position: new kakao.maps.LatLng(marker.lat, marker.lng),
-            //마커에 hover시 나타날 title
-            title: marker.title,
-          });
-    
-          const infoWindow = new kakao.maps.InfoWindow({
-            // map: map,
-            content: `<div style="padding:5px; font-size:0.85rem;">${marker.title}</div>`,
-            position: new kakao.maps.LatLng(marker.lat, marker.lng),
-            // removable: true
-          })
-    
-          kakao.maps.event.addListener(markers, 'mouseover', makeOverListener(map, markers, infoWindow))
-      
-          kakao.maps.event.addListener(markers, 'mouseout', makeOutListener(infoWindow))
+          addMarker(marker)
         });
-        
-        createCoffeeMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
-        createStoreMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
-    
-        // changeMarker('coffee'); // 지도에 커피숍 마커가 보이도록 설정합니다   
-        
-        // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
-        function createCoffeeMarkers() {
-          for (var i = 0; i < coffeePositions.length; i++) {  
-            var imageSize = new kakao.maps.Size(22, 26),
-                imageOptions = {  
-                  spriteOrigin: new kakao.maps.Point(10, 0),    
-                  spriteSize: new kakao.maps.Size(36, 98)  
-                };     
-            
-            // 마커이미지와 마커를 생성합니다
-            var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-                marker = createMarker(coffeePositions[i], markerImage);  
-            
-            // 생성된 마커를 커피숍 마커 배열에 추가합니다
-            coffeeMarkers.push(marker);
-          }     
-        }
-    
-        // 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
-        function createStoreMarkers() {
-          for (var i = 0; i < storePositions.length; i++) {
-            var imageSize = new kakao.maps.Size(22, 26),
-                imageOptions = {   
-                  spriteOrigin: new kakao.maps.Point(10, 36),    
-                  spriteSize: new kakao.maps.Size(36, 98)  
-                };       
-        
-            // 마커이미지와 마커를 생성합니다
-            var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-                marker = createMarker(storePositions[i], markerImage);  
-    
-            // 생성된 마커를 편의점 마커 배열에 추가합니다
-            storeMarkers.push(marker);    
-          }        
-        }
-    
-        // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
-        function changeMarker(type){
-          var coffeeMenu = document.getElementById('coffeeMenu');
-          var storeMenu = document.getElementById('storeMenu');
-          
-          // 커피숍 카테고리가 클릭됐을 때
-          if (type === 'coffee') {
-            // 커피숍 카테고리를 선택된 스타일로 변경하고
-            coffeeMenu.className = 'menu_selected';
-            
-            // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-            storeMenu.className = '';
-            
-            // 커피숍 마커들만 지도에 표시하도록 설정합니다
-            setCoffeeMarkers(map);
-            setStoreMarkers(null);
-          } else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때   
-            // 편의점 카테고리를 선택된 스타일로 변경하고
-            coffeeMenu.className = '';
-            storeMenu.className = 'menu_selected';
-            
-            // 편의점 마커들만 지도에 표시하도록 설정합니다
-            setCoffeeMarkers(null);
-            setStoreMarkers(map);
-          }  
-        } 
+
+        console.log(markers)
         
         /**
          * event
          */
         kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-            alert(mouseEvent.latLng.toString());
-          });
+          addMarker(mouseEvent.latLng);
+        });
       })
     }
-
-    }, [])
-
+  }, [])
 
   const initMap = () => {
+    const background = document.querySelector('#loading_background')
+    const loading = document.querySelector('#loading')
+    background.removeAttribute('active')
+    loading.removeAttribute('active')
+
     const container = document.getElementById('map');
     const options = {
       center: new kakao.maps.LatLng(37.498080946822995, 127.02793242136087),
@@ -146,7 +62,6 @@ export default function Restaurants() {
   /**
    * infoWindow
    */
-
   // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
   function makeOverListener(map, marker, infowindow) {
     return function () {
@@ -162,70 +77,78 @@ export default function Restaurants() {
     };
   }
 
-
   /**
    * marker
    */
-  // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
-  function createMarkerImage(src, size, options) {
-    var markerImage = new kakao.maps.MarkerImage(src, size, options);
-    return markerImage;            
-  }
 
-  // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-  function createMarker(position, image) {
-    var marker = new kakao.maps.Marker({
-      position: position,
-      image: image
+  // 마커를 생성하고 지도위에 표시하는 함수입니다
+  const addMarker = (data) => {
+    if(!data?.title) {
+      data = {
+        title: '추가된 데이터' + (i++),
+        lat: data.Ma,
+        lng: data.La
+      }
+    }
+
+    // 마커를 생성합니다
+    const marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(data.lat, data.lng),
+      image: markerImage
     });
+
+    console.log(data.title)
+
+    const infoWindow = new kakao.maps.InfoWindow({
+      // map: map,
+      content: `<div style="padding:5px; font-size:0.85rem;">${data.title}</div>`,
+      position: new kakao.maps.LatLng(marker.lat, marker.lng),
+      // removable: true
+    })
+
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infoWindow))
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infoWindow))
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
     
-    return marker;  
-  }   
+    // 생성된 마커를 배열에 추가합니다
+    markers.push(marker);
+  }
 
   // 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
-  function setCoffeeMarkers(map) {        
-    for (var i = 0; i < coffeeMarkers.length; i++) {  
-      coffeeMarkers[i].setMap(map);
-    }        
+  function setCoffeeMarkers() {       
+    coffeeData.forEach((marker) => {
+      // 마커를 생성합니다
+      const markers = new kakao.maps.Marker({
+        //마커가 표시 될 지도
+        map: map,
+        //마커가 표시 될 위치
+        position: new kakao.maps.LatLng(marker.lat, marker.lng),
+        //마커에 hover시 나타날 title
+        title: marker.title,
+      });
+    })    
   }
+
 
   // 편의점 마커들의 지도 표시 여부를 설정하는 함수입니다
-  function setStoreMarkers(map) {        
-    for (var i = 0; i < storeMarkers.length; i++) {  
-      storeMarkers[i].setMap(map);
-    }        
+  function setStoreMarkers() {
+    storeData.forEach((marker) => {
+      // 마커를 생성합니다
+      const markers = new kakao.maps.Marker({
+        //마커가 표시 될 지도
+        map: map,
+        //마커가 표시 될 위치
+        position: new kakao.maps.LatLng(marker.lat, marker.lng),
+        //마커에 hover시 나타날 title
+        title: marker.title,
+      });
+    })       
   }
 
-  // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
-  function changeMarker(type){
-    const coffeeMenu = document.getElementById('coffeeMenu');
-    const storeMenu = document.getElementById('storeMenu');
-
-    console.log(coffeeMenu, storeMenu)
-    
-    // 커피숍 카테고리가 클릭됐을 때
-    if (type === 'coffee') {
-      // 커피숍 카테고리를 선택된 스타일로 변경하고
-      coffeeMenu.className = 'menu_selected';
-      
-      // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-      storeMenu.className = '';
-      
-      // 커피숍 마커들만 지도에 표시하도록 설정합니다
-      setCoffeeMarkers(map);
-      setStoreMarkers(null);
-    } else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때   
-      // 편의점 카테고리를 선택된 스타일로 변경하고
-      coffeeMenu.className = '';
-      storeMenu.className = 'menu_selected';
-      
-      // 편의점 마커들만 지도에 표시하도록 설정합니다
-      setCoffeeMarkers(null);
-      setStoreMarkers(map);
-    }  
-  } 
-
-  const test = (e) => {
+  const changeMarker = (e) => {
+    const target = e.target
     const li = document.querySelectorAll('li')
     li.forEach((child) => {
       child.removeAttribute('active')
@@ -233,9 +156,21 @@ export default function Restaurants() {
       child.querySelector('span').removeAttribute('active')
     })
 
-    e.target.setAttribute('active','')
-    e.target.querySelector('img').setAttribute('active','')
-    e.target.querySelector('span').setAttribute('active','')
+    target.setAttribute('active','')
+    target.querySelector('img').setAttribute('active','')
+    target.querySelector('span').setAttribute('active','')
+
+    const coffeeMenu = document.getElementById('coffeeMenu');
+    const storeMenu = document.getElementById('storeMenu');
+
+    // 커피숍 카테고리가 클릭됐을 때
+    if (target.id === 'coffeeMenu') {
+      // 커피숍 마커들만 지도에 표시하도록 설정합니다
+      setCoffeeMarkers();
+    } else if (target.id === 'storeMenu') {
+      // 편의점 마커들만 지도에 표시하도록 설정합니다
+      setStoreMarkers();
+    }  
   }
 
   return (
@@ -245,11 +180,11 @@ export default function Restaurants() {
       <section className={styles.map} id="map" />
       <div className={styles.category}>
         <ul>
-          <li id="coffeeMenu" onClick={test} active="">
+          <li id="coffeeMenu" onClick={changeMarker} active="">
             <img src={coffee} active=""/>
             <span active="">커피</span>
           </li>
-          <li id="storeMenu" onClick={test}>
+          <li id="storeMenu" onClick={changeMarker}>
             <img src={store} />
             <span>편의점</span>
           </li>

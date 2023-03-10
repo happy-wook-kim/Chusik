@@ -11,7 +11,7 @@ import Settings from './view/settings'
 import Favorites from './view/favorites'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path={'/'} element={<BasicLayout />}>
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
