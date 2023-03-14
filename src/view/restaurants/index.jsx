@@ -1,13 +1,16 @@
-import infoStore from "../../stores/info";
 import styles from "./restaurant.module.scss"
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { markerData, coffeeData, storeData, categoryImg } from "../../data/markerData";
 import store from "../../assets/store.svg"
 import coffee from "../../assets/coffee.svg"
 import all from "../../assets/all.svg"
+import search from "../../assets/search.svg"
+import { useNavigate } from "react-router-dom";
 
 export default function Restaurants() {    
   let map, markers = [], i = 0, markerImage
+  const category = useRef(), tools = useRef()
+  const navigator = useNavigate()
 
   useEffect(()=>{
     const script = document.createElement("script");
@@ -121,7 +124,6 @@ export default function Restaurants() {
 
   // 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
   function showMarkers(id) {
-    console.log(id)
     for (var i = 0; i < markers.length; i++) {
       if(id === 'all') {
         markers[i].marker.setMap(map);
@@ -137,14 +139,13 @@ export default function Restaurants() {
 
   const changeMarker = (e) => {
     const target = e.target
-    const li = document.querySelectorAll('li')
+    const li = category.current.querySelectorAll('li')
     li.forEach((child) => {
       child.removeAttribute('active')
       child.querySelector('img').removeAttribute('active')
       child.querySelector('span').removeAttribute('active')
     })
 
-    console.log(target)
     target.setAttribute('active','')
     target.querySelector('img').setAttribute('active','')
     target.querySelector('span').setAttribute('active','')
@@ -152,12 +153,16 @@ export default function Restaurants() {
     showMarkers(target.id);
   }
 
+  const searchRestaurant = () => {
+    navigator(`/restaurants/search`)
+  }
+
   return (
     <div>
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" />
-      <div className={styles.category}>
+      <div className={styles.category} ref={category}>
         <ul>
           <li id="all" active="" onClick={changeMarker}>
             <img src={all} active=""/>
@@ -170,6 +175,13 @@ export default function Restaurants() {
           <li id="store" onClick={changeMarker}>
             <img src={store} />
             <span>가게</span>
+          </li>
+        </ul>
+      </div>
+      <div className={styles.tools} ref={tools}>
+        <ul>
+          <li onClick={searchRestaurant}>
+            <img src={search} />
           </li>
         </ul>
       </div>
