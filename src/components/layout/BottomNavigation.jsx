@@ -10,21 +10,21 @@ export default function BottomNavigation() {
       index: 0,
       value: false,
       title: '식당 찾기',
-      src: new URL('../../assets/map.svg', import.meta.url).href,
+      src: new URL('@/assets/map.svg', import.meta.url).href,
       url: '/restaurants'
     },
     {
       index: 1,
       value: false,
       title: '즐겨찾기',
-      src: new URL('../../assets/bookmark.svg', import.meta.url).href,
+      src: new URL('@/assets/bookmark.svg', import.meta.url).href,
       url: '/favorites'
     },
     {
       index: 2,
       value: false,
       title: '설정',
-      src: new URL('../../assets/settings.svg', import.meta.url).href,
+      src: new URL('@/assets/settings.svg', import.meta.url).href,
       url: '/settings'
     }
   ])

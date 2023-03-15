@@ -1,16 +1,21 @@
 import styles from "./restaurant.module.scss"
 import { useEffect, useRef } from 'react'
-import { markerData, coffeeData, storeData, categoryImg } from "../../data/markerData";
-import store from "../../assets/store.svg"
-import coffee from "../../assets/coffee.svg"
-import all from "../../assets/all.svg"
-import search from "../../assets/search.svg"
+import { markerData, coffeeData, storeData, categoryImg } from "@/data/markerData";
+import store from "@/assets/store.svg"
+import coffee from "@/assets/coffee.svg"
+import all from "@/assets/all.svg"
+import search from "@/assets/search.svg"
 import { useNavigate } from "react-router-dom";
+import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
-  let map, markers = [], i = 0, markerImage
-  const category = useRef(), tools = useRef()
+  let map, markers = [], i = 0, markerImage, position
+  const category = useRef(), tools = useRef(), sectionMap = useRef()
   const navigator = useNavigate()
+  const size = {
+    width: '480px',
+    height: 'calc(100vh - 60px)',
+  }
 
   useEffect(()=>{
     const script = document.createElement("script");
@@ -21,7 +26,8 @@ export default function Restaurants() {
 
     script.onload = () => {
       kakao.maps.load(() => {
-        map = initMap()
+        position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
+        map = initMap(position, size)
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
         /**
          * marker
@@ -49,44 +55,27 @@ export default function Restaurants() {
     }
   }, [])
 
-  const initMap = () => {
+  const initMap = (position, size) => {
     const background = document.querySelector('#loading_background')
     const loading = document.querySelector('#loading')
     background.removeAttribute('active')
     loading.removeAttribute('active')
 
-    const container = document.getElementById('map');
+    sectionMap.current.style.width = size.width
+    sectionMap.current.style.height = size.height
+
     const options = {
-      center: new kakao.maps.LatLng(37.498080946822995, 127.02793242136087),
+      center: position,
       level: 4,
     };
-    const map = new kakao.maps.Map(container, options);
+    const map = new kakao.maps.Map(sectionMap.current, options);
     
     return map 
   }
 
   /**
-   * infoWindow
-   */
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  function makeOverListener(map, marker, infowindow) {
-    return function () {
-      infowindow.open(map, marker);
-      infowindow.getMap()
-    };
-  }
-
-  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-  function makeOutListener(infowindow) {
-    return function () {
-      infowindow.close();
-    };
-  }
-
-  /**
    * marker
    */
-
   // 마커를 생성하고 지도위에 표시하는 함수입니다
   const addMarker = (data) => {
     if(!data?.title) {
@@ -114,6 +103,7 @@ export default function Restaurants() {
     })
 
     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infoWindow))
+    kakao.maps.event.addListener(marker, 'click', showDetail(map, marker))
 
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
@@ -153,15 +143,45 @@ export default function Restaurants() {
     showMarkers(target.id);
   }
 
+    /**
+   * infoWindow
+   */
+  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+  function makeOverListener(map, marker, infowindow) {
+    return function () {
+      infowindow.open(map, marker);
+      infowindow.getMap()
+    };
+  }
+
+  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+  function makeOutListener(infowindow) {
+    return function () {
+      infowindow.close();
+    };
+  }
+
+  const showDetail = (map, marker) => {
+    return () => {
+      console.log(map)
+      console.log(marker.getPosition())
+      // const moveLatLon = new kakao.maps.LatLng(, 126.574942);
+    
+      map.panTo(marker.getPosition())
+
+      console.log(sectionMap.current)
+    }
+  }
+
   const searchRestaurant = () => {
-    navigator(`/restaurants/search`)
+    // navigator(`/restaurants/search`)
   }
 
   return (
     <div>
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      <section className={styles.map} id="map" />
+      <section className={styles.map} id="map" ref={sectionMap}/>
       <div className={styles.category} ref={category}>
         <ul>
           <li id="all" active="" onClick={changeMarker}>
@@ -185,6 +205,7 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
+      <MarekrDetail />
     </div>
   )
 }

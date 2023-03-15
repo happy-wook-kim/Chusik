@@ -1,5 +1,5 @@
-@import "../../scss/mixins.scss";
-@import "../../scss/variables.scss";
+@import "@/scss/mixins.scss";
+@import "@/scss/variables.scss";
 
 .navigation {
   display: grid;
@@ -38,6 +38,11 @@
       img {
         width: 22px;
       }
+
+      &.buttonActive{
+        background-color: white;
+        transition: background-color 0.3s;
+      }
     }
   }
 
@@ -45,8 +50,4 @@
     width: $--body-width;
     margin: $--body-margin;
   }
-}
-
-.buttonActive {
-  background-color: white !important;
 }
