@@ -1,5 +1,5 @@
 import styles from "./restaurant.module.scss"
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { markerData, coffeeData, storeData, categoryImg } from "@/data/markerData";
 import store from "@/assets/store.svg"
 import coffee from "@/assets/coffee.svg"
@@ -9,8 +9,12 @@ import { useNavigate } from "react-router-dom";
 import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
-  let map, markers = [], i = 0, markerImage, position
+  let map, markers = [], i = 0, position
   const category = useRef(), tools = useRef(), sectionMap = useRef()
+  const [markerDetail, setMarkerDetail] = useState({
+    title: '',
+    position: '',
+  })
   const navigator = useNavigate()
   const size = {
     width: '480px',
@@ -42,8 +46,6 @@ export default function Restaurants() {
         storeData.forEach((marker) => {
           addMarker(marker)
         })
-
-        console.log(markers)
         
         /**
          * event
@@ -54,6 +56,7 @@ export default function Restaurants() {
       })
     }
   }, [])
+
 
   const initMap = (position, size) => {
     const background = document.querySelector('#loading_background')
@@ -92,7 +95,8 @@ export default function Restaurants() {
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(data.lat, data.lng),
       image: new kakao.maps.MarkerImage(categoryImg[data.category], new kakao.maps.Size(size, size)),
-      cateogry: data.category
+      cateogry: data.category,
+      title: data.title
     });
 
     const infoWindow = new kakao.maps.InfoWindow({
@@ -102,8 +106,11 @@ export default function Restaurants() {
       removable: true
     })
 
-    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infoWindow))
+    // kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infoWindow))
     kakao.maps.event.addListener(marker, 'click', showDetail(map, marker))
+    kakao.maps.event.addListener(marker, 'rightclick', function() {
+      alert('marker rightclick!');
+    });
 
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
@@ -162,14 +169,15 @@ export default function Restaurants() {
   }
 
   const showDetail = (map, marker) => {
-    return () => {
-      console.log(map)
-      console.log(marker.getPosition())
-      // const moveLatLon = new kakao.maps.LatLng(, 126.574942);
-    
+    return () => {    
       map.panTo(marker.getPosition())
 
-      console.log(sectionMap.current)
+      setMarkerDetail((prevState) => {
+        return { 
+          ...prevState, 
+          position: marker.getPosition(),
+          title: marker.getTitle()}
+      })
     }
   }
 
@@ -205,7 +213,7 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <MarekrDetail />
+      <MarekrDetail marker={markerDetail} active={undefined}/>
     </div>
   )
 }

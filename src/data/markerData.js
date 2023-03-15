@@ -125,8 +125,8 @@ export const storeData = [
 
 export const categoryImg = {
   'restaurant': new URL('/chusik_64x64.png', import.meta.url).href,
-  'store': new URL('../../src/assets/store.png', import.meta.url).href,
-  'home': new URL('../../src/assets/home.png', import.meta.url).href,
-  'cafe': new URL('../../src/assets/cafe.png', import.meta.url).href,
-  'building': new URL('../../src/assets/building.png', import.meta.url).href,
+  'store': new URL('@/assets/store.png', import.meta.url).href,
+  'home': new URL('@/assets/home.png', import.meta.url).href,
+  'cafe': new URL('@/assets/cafe.png', import.meta.url).href,
+  'building': new URL('@/assets/building.png', import.meta.url).href,
 }

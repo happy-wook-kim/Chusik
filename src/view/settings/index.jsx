@@ -1,4 +1,4 @@
-import infoStore from "../../stores/info"
+import infoStore from "@/stores/info"
 
 export default function Settings() {
   const [name, setName] = infoStore((state) => [state.name, state.setName])
