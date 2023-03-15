@@ -99,14 +99,6 @@ export default function Restaurants() {
       title: data.title
     });
 
-    const infoWindow = new kakao.maps.InfoWindow({
-      // map: map,
-      content: `<div style="padding:5px; font-size:0.85rem;">${data.title}</div>`,
-      position: new kakao.maps.LatLng(marker.lat, marker.lng),
-      removable: true
-    })
-
-    // kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infoWindow))
     kakao.maps.event.addListener(marker, 'click', showDetail(map, marker))
     kakao.maps.event.addListener(marker, 'rightclick', function() {
       alert('marker rightclick!');
@@ -148,24 +140,6 @@ export default function Restaurants() {
     target.querySelector('span').setAttribute('active','')
 
     showMarkers(target.id);
-  }
-
-    /**
-   * infoWindow
-   */
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  function makeOverListener(map, marker, infowindow) {
-    return function () {
-      infowindow.open(map, marker);
-      infowindow.getMap()
-    };
-  }
-
-  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-  function makeOutListener(infowindow) {
-    return function () {
-      infowindow.close();
-    };
   }
 
   const showDetail = (map, marker) => {

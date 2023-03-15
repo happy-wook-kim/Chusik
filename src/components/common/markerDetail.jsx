@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styles from './markerDetail.module.scss';
 
-
 export default function markerDetail(props) {
   const info = useRef()
 
@@ -15,7 +14,7 @@ export default function markerDetail(props) {
 
   const close = () => {
     info.current.removeAttribute('active')
-    props.marker.position = undefined
+    props.marker.position = ""
   }
 
   return (
