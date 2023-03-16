@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
 import styles from './markerDetail.module.scss';
 
-export default function markerDetail(props) {
+export default function markerDetail({ marker }) {
   const info = useRef()
 
   useEffect(() => {
-    if(props.marker.position !== "") open()
+    if(marker.position !== "") open()
   })
 
   const open = () => {
@@ -14,15 +14,15 @@ export default function markerDetail(props) {
 
   const close = () => {
     info.current.removeAttribute('active')
-    props.marker.position = ""
+    marker.position = ""
   }
 
   return (
     <div ref={info} className={styles.marker_info}>
-      {props.marker.position &&
+      {marker.position &&
       <div className={styles.marker_info_div}>
-        <p className={styles.marker_info_div__title}>{props.marker.title}</p> 
-        <small className={styles.marker_info_div__position}>{props.marker.position.Ma} / {props.marker.position.La}</small>
+        <p className={styles.marker_info_div__title}>{marker.title}</p> 
+        <small className={styles.marker_info_div__position}>{marker.position.Ma} / {marker.position.La}</small>
       </div>
       }
       <button className={styles.marker_info__close} onClick={close}>X</button>

@@ -187,7 +187,7 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <MarekrDetail marker={markerDetail} active={undefined}/>
+      <MarekrDetail marker={markerDetail}/>
     </div>
   )
 }
