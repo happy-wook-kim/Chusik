@@ -14,6 +14,7 @@ export default function Restaurants() {
   const [markerDetail, setMarkerDetail] = useState({
     title: '',
     position: '',
+    category: '',
   })
   const navigator = useNavigate()
   const size = {
@@ -99,7 +100,7 @@ export default function Restaurants() {
       title: data.title
     });
 
-    kakao.maps.event.addListener(marker, 'click', showDetail(map, marker))
+    kakao.maps.event.addListener(marker, 'click', showDetail(map, marker, data.category))
     kakao.maps.event.addListener(marker, 'rightclick', function() {
       alert('marker rightclick!');
     });
@@ -142,7 +143,7 @@ export default function Restaurants() {
     showMarkers(target.id);
   }
 
-  const showDetail = (map, marker) => {
+  const showDetail = (map, marker, category) => {
     return () => {    
       map.panTo(marker.getPosition())
 
@@ -150,7 +151,9 @@ export default function Restaurants() {
         return { 
           ...prevState, 
           position: marker.getPosition(),
-          title: marker.getTitle()}
+          title: marker.getTitle(),
+          category: category
+        }
       })
     }
   }

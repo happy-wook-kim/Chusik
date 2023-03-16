@@ -1,0 +1,40 @@
+$color: rgb(240, 175, 118);
+.badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid lightgray;
+  border-radius: 20px;
+  column-gap: 6px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.3s;
+    background-color: $color;
+    border: $color;
+
+    small {
+      color: white;
+      transition: all 0.3s;
+    }
+  }
+
+  &[active] {
+    background-color: $color;
+    border: $color;
+
+    small {
+      color: rgb(255, 255, 255);
+    }
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+
+  small {
+    margin-right: 3px;
+  }
+}

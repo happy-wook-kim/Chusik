@@ -75,7 +75,7 @@ button:focus-visible {
   width: 100%;
 }
 
-h1,h2,h3,h4,h5 {
+h1,h2,h3,h4,h5, p {
   margin: 0 !important;
 }
 
@@ -95,4 +95,8 @@ button {
   border-color: #c7c7c7;
   background-color: white;
   color: #595959;
+}
+
+small {
+  color: gray;
 }

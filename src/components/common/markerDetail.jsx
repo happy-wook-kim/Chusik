@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import styles from './markerDetail.module.scss';
+import Badge from '@/components/common/badge';
 
 export default function markerDetail({ marker }) {
   const info = useRef()
 
   useEffect(() => {
+    console.log(marker)
     if(marker.position !== "") open()
   })
 
@@ -21,6 +23,10 @@ export default function markerDetail({ marker }) {
     <div ref={info} className={styles.marker_info}>
       {marker.position &&
       <div className={styles.marker_info_div}>
+        <Badge 
+          className={styles.marker_info_div__badge}
+          type={marker.category}
+        />
         <p className={styles.marker_info_div__title}>{marker.title}</p> 
         <small className={styles.marker_info_div__position}>{marker.position.Ma} / {marker.position.La}</small>
       </div>
