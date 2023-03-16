@@ -6,7 +6,6 @@ export default function markerDetail({ marker }) {
   const info = useRef()
 
   useEffect(() => {
-    console.log(marker)
     if(marker.position !== "") open()
   })
 

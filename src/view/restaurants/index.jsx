@@ -58,7 +58,6 @@ export default function Restaurants() {
     }
   }, [])
 
-
   const initMap = (position, size) => {
     const background = document.querySelector('#loading_background')
     const loading = document.querySelector('#loading')
@@ -109,7 +108,7 @@ export default function Restaurants() {
     marker.setMap(map);
     
     // 생성된 마커를 배열에 추가합니다
-    markers.push({marker, category:data.category});
+    markers.push({ marker, category:data.category });
   }
 
   // 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
@@ -147,6 +146,7 @@ export default function Restaurants() {
     return () => {    
       map.panTo(marker.getPosition())
 
+      console.log(markers);
       setMarkerDetail((prevState) => {
         return { 
           ...prevState, 

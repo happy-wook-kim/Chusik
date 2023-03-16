@@ -5,8 +5,8 @@ import styles from "./badge.module.scss"
 export default function badge({ type }) {
   const [badgeImg, setBadge] = useState()
   const [badgeCategory, setCategory] = useState()
+  
   useEffect(() => {
-    console.log(type)
     setBadge(() => {
       return categoryImg[type]
     })
