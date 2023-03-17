@@ -7,6 +7,7 @@ export default function markerDetail({ marker }) {
 
   useEffect(() => {
     if(marker.position !== "") open()
+    else close()
   })
 
   const open = () => {

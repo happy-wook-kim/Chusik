@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
-  let map, markers = [], i = 0, position
+  let i = 0, position
   const category = useRef(), tools = useRef(), sectionMap = useRef()
+  let [map, setMap] = useState({})
+  let [markers, setMarkers] = useState([])
   const [markerDetail, setMarkerDetail] = useState({
     title: '',
     position: '',
@@ -25,20 +27,17 @@ export default function Restaurants() {
   useEffect(()=>{
     const script = document.createElement("script");
     script.async = true;
-    script.src =
-      `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_KEY}&autoload=false`;
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_KEY}&autoload=false`;
     document.head.appendChild(script);
-
     script.onload = () => {
       kakao.maps.load(() => {
         position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
         map = initMap(position, size)
-        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-        /**
-         * marker
-         */
+        setMap(() => {
+          return map
+        })
+
         markerData.forEach((marker) => {
-          // 마커를 생성합니다
           addMarker(marker)
         })
         coffeeData.forEach((marker) => {
@@ -48,9 +47,6 @@ export default function Restaurants() {
           addMarker(marker)
         })
         
-        /**
-         * event
-         */
         kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
           addMarker(mouseEvent.latLng)
         })
@@ -79,7 +75,6 @@ export default function Restaurants() {
   /**
    * marker
    */
-  // 마커를 생성하고 지도위에 표시하는 함수입니다
   const addMarker = (data) => {
     if(!data?.title) {
       data = {
@@ -91,7 +86,6 @@ export default function Restaurants() {
     }
 
     const size = 32
-    // 마커를 생성합니다
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(data.lat, data.lng),
       image: new kakao.maps.MarkerImage(categoryImg[data.category], new kakao.maps.Size(size, size)),
@@ -104,14 +98,18 @@ export default function Restaurants() {
       alert('marker rightclick!');
     });
 
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-    
-    // 생성된 마커를 배열에 추가합니다
-    markers.push({ marker, category:data.category });
+    marker.setMap(map);    
+    setMarkers((prevState) => {
+      return [
+        ...prevState, 
+        {
+          marker,
+          category:data.category
+        }
+      ]
+    })
   }
 
-  // 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
   function showMarkers(id) {
     for (var i = 0; i < markers.length; i++) {
       if(id === 'all') {
@@ -123,7 +121,18 @@ export default function Restaurants() {
           markers[i].marker.setMap(null);
         }
       }
-    }            
+    }
+
+    if(id !== markerDetail.category && id !== 'all') {
+      setMarkerDetail((prevState) => {
+        return { 
+          ...prevState, 
+          position: "",
+          title: undefined,
+          category: undefined
+        }
+      }) 
+    }
   }
 
   const changeMarker = (e) => {
@@ -143,10 +152,13 @@ export default function Restaurants() {
   }
 
   const showDetail = (map, marker, category) => {
-    return () => {    
+    return () => {
       map.panTo(marker.getPosition())
+      const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(32, 32))
+      const reactImg = new kakao.maps.MarkerImage(new URL('@/assets/react.svg', import.meta.url).href, new kakao.maps.Size(18, 18))
 
-      console.log(markers);
+      marker.setImage(reactImg)
+
       setMarkerDetail((prevState) => {
         return { 
           ...prevState, 
@@ -159,7 +171,7 @@ export default function Restaurants() {
   }
 
   const searchRestaurant = () => {
-    // navigator(`/restaurants/search`)
+    navigator(`/restaurants/search`)
   }
 
   return (

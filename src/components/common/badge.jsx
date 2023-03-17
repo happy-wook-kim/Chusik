@@ -7,9 +7,7 @@ export default function badge({ type }) {
   const [badgeCategory, setCategory] = useState()
   
   useEffect(() => {
-    setBadge(() => {
-      return categoryImg[type]
-    })
+    setBadge(() => { return categoryImg[type] })
     setCategory(() => { return type })
   })
 
