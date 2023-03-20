@@ -13,9 +13,15 @@ export default function search() {
   }
 
   const search = () => {
-    fetch(`/api/posts/${searchText}`)
-      .then((response) => response.json())
-      .then((json) => {
+    fetch(`/api/posts/${searchText}`, 
+      {
+        headers: {
+          Accept: "application/json"
+        },
+        method: "GET"
+      })
+      .then(response => response.json())
+      .then(json => {
         console.log(json)
         setObject(() => {
           return {
