@@ -27,6 +27,17 @@ export default function search() {
     if(response.status === 200 && response.data) {
       setObject(() => response.data)
     }
+
+    const response2 = await axios(`https://jsonplaceholder.typicode.com/posts/${searchText}`, 
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        'Content-Type':'application/json'
+      },
+    })
+  
+   console.log(response2)
   }
 
   return (
