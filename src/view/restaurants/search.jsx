@@ -1,5 +1,6 @@
 import { useState } from "react"
 import styles from "./search.module.scss"
+import axios from "axios"
 
 export default function search() {
   const [searchText, setText] = useState(1)
@@ -12,23 +13,20 @@ export default function search() {
     setText(() => e.target.value)
   }
 
-  const search = () => {
-    fetch(`/api/posts/${searchText}`, 
+  const search = async() => {
+    const response = await axios(`/api/posts/${searchText}`, 
       {
+        method: "GET",
         headers: {
-          Accept: "application/json"
+          Accept: "application/json",
+          'Content-Type':'application/json'
         },
-        method: "GET"
       })
-      .then(response => response.json())
-      .then(json => {
-        console.log(json)
-        setObject(() => {
-          return {
-            ...json
-          }
-        })
-      });
+    
+    console.log(response)
+    if(response.status === 200 && response.data) {
+      setObject(() => response.data)
+    }
   }
 
   return (
