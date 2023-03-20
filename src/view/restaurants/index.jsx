@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
+  const { kakao } = window
   let i = 0, position
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   let [map, setMap] = useState({})
@@ -23,39 +24,29 @@ export default function Restaurants() {
     width: '480px',
     height: 'calc(100vh - 60px)',
   }
-  
-  const searchRestaurant = () => {
-    navigator(`/restaurants/search`)
-  }
 
   useEffect(()=>{
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_KEY}&autoload=false`;
-    document.head.appendChild(script);
-    script.onload = () => {
-      kakao.maps.load(() => {
-        position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
-        map = initMap(position, size)
-        setMap(() => {
-          return map
-        })
-
-        markerData.forEach((marker) => {
-          addMarker(marker)
-        })
-        coffeeData.forEach((marker) => {
-          addMarker(marker)
-        })
-        storeData.forEach((marker) => {
-          addMarker(marker)
-        })
-        
-        kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-          addMarker(mouseEvent.latLng)
-        })
+    kakao.maps.load(() => {
+      position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
+      map = initMap(position, size)
+      setMap(() => {
+        return map
       })
-    }
+
+      markerData.forEach((marker) => {
+        addMarker(marker)
+      })
+      coffeeData.forEach((marker) => {
+        addMarker(marker)
+      })
+      storeData.forEach((marker) => {
+        addMarker(marker)
+      })
+      
+      kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
+        addMarker(mouseEvent.latLng)
+      })
+    })
   }, [])
 
   const initMap = (position, size) => {
@@ -172,6 +163,10 @@ export default function Restaurants() {
         }
       })
     }
+  }
+
+  const searchRestaurant = () => {
+    navigator(`/restaurants/search`)
   }
 
   return (
