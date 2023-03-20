@@ -166,6 +166,7 @@ export default function Restaurants() {
   }
 
   const searchRestaurant = () => {
+    console.log("??")
     navigator(`/restaurants/search`)
   }
 
@@ -191,6 +192,9 @@ export default function Restaurants() {
         </ul>
       </div>
       <div className={styles.tools} ref={tools}>
+        <button onClick={searchRestaurant}>
+          <img src={search} />
+        </button>
         <ul>
           <li onClick={searchRestaurant}>
             <img src={search} />
