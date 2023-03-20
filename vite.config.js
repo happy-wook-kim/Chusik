@@ -10,10 +10,10 @@ export default defineConfig({
   server: {
     port: 8470,
     proxy: {
-      '/api' : {
+      '/apis' : {
         target: process.env.VITE_API_URL,
         changeOrigin: true,
-        rewrite: (path) => path.replace('/api', '/')
+        rewrite: (path) => path.replace('/apis', '/')
       }
     }
   },

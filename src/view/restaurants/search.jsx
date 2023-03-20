@@ -13,10 +13,10 @@ export default function search() {
   }
 
   const search = () => {
-    fetch(`/api/posts/${searchText}`, 
+    fetch(`/apis/posts/${searchText}`, 
       {
         headers: {
-          Accept: "application/json",
+          'Accept' : "application/json",
           'Content-Type':'application/json'
         },
         method: "GET"
