@@ -1,6 +1,5 @@
 import { useState } from "react"
 import styles from "./search.module.scss"
-import axios from "axios"
 
 export default function search() {
   const [searchText, setText] = useState(1)
@@ -13,31 +12,24 @@ export default function search() {
     setText(() => e.target.value)
   }
 
-  const search = async() => {
-    const response = await axios(`/api/posts/${searchText}`, 
+  const search = () => {
+    fetch(`/api/posts/${searchText}`, 
       {
-        method: "GET",
         headers: {
           Accept: "application/json",
           'Content-Type':'application/json'
         },
+        method: "GET"
       })
-    
-    console.log(response)
-    if(response.status === 200 && response.data) {
-      setObject(() => response.data)
-    }
-
-    const response2 = await axios(`https://jsonplaceholder.typicode.com/posts/${searchText}`, 
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        'Content-Type':'application/json'
-      },
-    })
-  
-   console.log(response2)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json)
+        setObject(() => {
+          return {
+            ...json
+          }
+        })
+      });
   }
 
   return (
