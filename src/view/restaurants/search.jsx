@@ -12,24 +12,18 @@ export default function search() {
     setText(() => e.target.value)
   }
 
-  const search = () => {
-    fetch(`/chapi/posts/${searchText}`, 
-      {
-        headers: {
-          'Accept' : "application/json",
-          'Content-Type':'application/json'
-        },
-        method: "GET"
+  const search = async() => {
+    const response = await fetch(`/api/posts/${searchText}`)
+    console.log(response)
+    const json = await response.json()
+    console.log(json)
+    if(response.ok) {
+      setObject(() => {
+        return {
+          ...json
+        }
       })
-      .then(response => response.json())
-      .then(json => {
-        console.log(json)
-        setObject(() => {
-          return {
-            ...json
-          }
-        })
-      });
+    }
   }
 
   return (
