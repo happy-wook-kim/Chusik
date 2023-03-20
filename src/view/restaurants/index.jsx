@@ -23,6 +23,10 @@ export default function Restaurants() {
     width: '480px',
     height: 'calc(100vh - 60px)',
   }
+  
+  const searchRestaurant = () => {
+    navigator(`/restaurants/search`)
+  }
 
   useEffect(()=>{
     const script = document.createElement("script");
@@ -168,10 +172,6 @@ export default function Restaurants() {
         }
       })
     }
-  }
-
-  const searchRestaurant = () => {
-    navigator(`/restaurants/search`)
   }
 
   return (

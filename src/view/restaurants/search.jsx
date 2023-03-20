@@ -2,7 +2,7 @@ import { useState } from "react"
 import styles from "./search.module.scss"
 
 export default function search() {
-  const [searchText, setText] = useState(1)
+  const [searchText, setText] = useState("")
   const [myObject, setObject] = useState({
     id: '',
     title: ''
@@ -13,7 +13,7 @@ export default function search() {
   }
 
   const search = () => {
-    fetch(`/apis/posts/${searchText}`, 
+    fetch(`/chapi/posts/${searchText}`, 
       {
         headers: {
           'Accept' : "application/json",
