@@ -192,9 +192,6 @@ export default function Restaurants() {
         </ul>
       </div>
       <div className={styles.tools} ref={tools}>
-        <button onClick={searchRestaurant}>
-          <img src={search} />
-        </button>
         <ul>
           <li onClick={searchRestaurant}>
             <img src={search} />

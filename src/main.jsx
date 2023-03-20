@@ -10,6 +10,9 @@ import RestaurantsSearch from './view/restaurants/search'
 import BasicLayout from './layout/BasicLayout'
 import Settings from './view/settings'
 import Favorites from './view/favorites'
+import SetAccount from './view/settings/account'
+import SetFavorite from './view/settings/favorite'
+import SetBlacklist from './view/settings/blacklist'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
@@ -21,6 +24,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={'/restaurants/search'} element={<RestaurantsSearch />} />
           <Route path={'/favorites'} element={<Favorites />} />
           <Route path={'/settings'} element={<Settings />} />
+          <Route path={'/settings/account'} element={<SetAccount />} />
+          <Route path={'/settings/favorite'} element={<SetFavorite />} />
+          <Route path={'/settings/blacklist'} element={<SetBlacklist />} />
           <Route path={'/*'} element={<NotFound />} />
         </Route>
       </Routes>

@@ -1,0 +1,23 @@
+$--border-color : rgb(240, 240, 240);
+
+.menu {
+  display: flex;
+  border: 1px solid $--border-color;
+  border-bottom: none;
+  padding: 10px 12px;
+  gap: 0px 7px;
+
+  &:last-child {
+    border-bottom: 1px solid $--border-color;
+  }
+
+  &__img {
+    width: 16px;
+  }
+
+  &__title {
+    cursor: pointer;
+    color: rgb(34, 34, 34);
+    font-size: 0.85rem;
+  }
+}
