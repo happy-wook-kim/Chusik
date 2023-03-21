@@ -14,7 +14,16 @@ import SetAccount from './view/settings/account'
 import SetFavorite from './view/settings/favorite'
 import SetBlacklist from './view/settings/blacklist'
 
-document.querySelector("body").style.height = window.innerHeight + "px"
+let vh = window.innerHeight * 0.01;
+// Then we set the value in the --vh custom property to the root of the document
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+window.addEventListener('resize', () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  console.log('reisze')
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>

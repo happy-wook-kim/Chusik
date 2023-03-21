@@ -4,9 +4,8 @@
   line-height: 24px;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #213547;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,7 +28,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 h1 {
@@ -47,26 +46,6 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
 /* 커스텀 */
@@ -95,13 +74,6 @@ button {
   border-color: #c7c7c7;
   background-color: white;
   color: #595959;
-}
-
-button:active {
-  background-color: rgba(243, 243, 243, 0.2);
-  box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
-  position: relative;
-  top:1px;
 }
 
 button:focus {
