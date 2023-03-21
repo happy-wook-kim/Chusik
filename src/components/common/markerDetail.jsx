@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import styles from './markerDetail.module.scss';
 import Badge from '@/components/common/badge';
 
-export default function markerDetail({ marker }) {
+export default function markerDetail({ marker, resetState }) {
   const info = useRef()
 
   useEffect(() => {
@@ -17,6 +17,9 @@ export default function markerDetail({ marker }) {
   const close = () => {
     info.current.removeAttribute('active')
     marker.position = ""
+    if(marker?.mode === 'search') {
+      resetState()
+    }
   }
 
   return (

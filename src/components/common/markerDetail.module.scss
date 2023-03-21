@@ -6,19 +6,15 @@
   bottom: 0;
   left: 0;
   background-color: white;
-  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-
   transform:translateY(0%);
   transition: all 0.5s ease-in-out;
-
   &:not([active]){
     transform: translateY(100%);
     transition: all 0.5s ease-in-out;
   }
-
   &_div {
     display: grid;
     grid-template-areas: 
@@ -29,27 +25,22 @@
     align-items: center;
     padding: 20px;
     gap: 10px 8px;
-
     &__badge {
       grid-area: badge;
     }
-
     &__title {
       grid-area: title;
       font-weight: 600;
     }
-
     &__position {
       grid-area: position;
     }
   }
-
   &__close {
     position: absolute;
     right: 10px;
     top: 10px;
     padding: 10px 15px;
-
     &:hover {
       background-color: rgb(231, 231, 231);
       border: 1px solid rgb(231, 231, 231);;

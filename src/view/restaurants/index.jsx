@@ -14,6 +14,8 @@ export default function Restaurants() {
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   let [map, setMap] = useState({})
   let [markers, setMarkers] = useState([])
+  let [reset, setReset] = useState(false)
+  let [countRender, setCounter] = useState(0)
   const [markerDetail, setMarkerDetail] = useState({
     title: '',
     position: '',
@@ -21,10 +23,6 @@ export default function Restaurants() {
   })
   const navigator = useNavigate()
   const location = useLocation()
-  // const size = {
-  //   width: '480px',
-  //   height: 'calc(100vh - 60px)',
-  // }
 
   useEffect(()=>{
     if(location.state) getQuery()
@@ -46,16 +44,7 @@ export default function Restaurants() {
           }
         })
       }else {
-        markerData.forEach((marker) => {
-          addMarker(marker)
-        })
-        coffeeData.forEach((marker) => {
-          addMarker(marker)
-        })
-        storeData.forEach((marker) => {
-          addMarker(marker)
-        })
-        
+        initMarkers()
         kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
           addMarker(mouseEvent.latLng)
         })
@@ -63,6 +52,16 @@ export default function Restaurants() {
 
     })
   }, [])
+
+  useEffect(() => {
+    console.log(countRender)
+    if(countRender > 0) {
+      console.log('reset!')
+      console.log(map)
+      navigator(`/restaurants`)
+      initMarkers()
+    }
+  }, [reset])
 
   const initMap = (position) => {
     const background = document.querySelector('#loading_background')
@@ -77,6 +76,18 @@ export default function Restaurants() {
     const map = new kakao.maps.Map(sectionMap.current, options);
     
     return map 
+  }
+
+  const initMarkers = () => {
+    markerData.forEach((marker) => {
+      addMarker(marker)
+    })
+    coffeeData.forEach((marker) => {
+      addMarker(marker)
+    })
+    storeData.forEach((marker) => {
+      addMarker(marker)
+    })
   }
 
   /**
@@ -189,6 +200,13 @@ export default function Restaurants() {
     if(location.state?.data?.lng) latlng[1] = location.state?.data?.lng
   }
 
+  const resetState = () => {
+    if(!reset) {
+      setCounter(countRender + 1)
+      setReset(() => true)
+    }
+  }
+
   return (
     <div>
       <div id="loading_background" className={styles.loading_background} active=""></div>
@@ -217,7 +235,7 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <MarekrDetail marker={markerDetail}/>
+      <MarekrDetail marker={markerDetail} resetState={resetState}/>
     </div>
   )
 }
