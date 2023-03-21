@@ -6,6 +6,7 @@ $--border-color : rgb(240, 240, 240);
   border-bottom: none;
   padding: 10px 12px;
   gap: 0px 7px;
+  cursor: pointer;
 
   &:last-child {
     border-bottom: 1px solid $--border-color;
@@ -16,7 +17,6 @@ $--border-color : rgb(240, 240, 240);
   }
 
   &__title {
-    cursor: pointer;
     color: rgb(34, 34, 34);
     font-size: 0.85rem;
   }

@@ -10,8 +10,9 @@ import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087]
+  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087], searchedMarker
   const category = useRef(), tools = useRef(), sectionMap = useRef()
+  const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
   let [markers, setMarkers] = useState([])
   let [reset, setReset] = useState(false)
@@ -21,8 +22,6 @@ export default function Restaurants() {
     position: '',
     category: '',
   })
-  const navigator = useNavigate()
-  const location = useLocation()
 
   useEffect(()=>{
     if(location.state) getQuery()
@@ -33,8 +32,8 @@ export default function Restaurants() {
         return map
       })
       if(location.state){
-        const marker = location.state.data
-        addMarker(marker)
+        searchedMarker = location.state.data
+        addMarker(searchedMarker, "search")
         setMarkerDetail(() => {
           return { 
             position: new kakao.maps.LatLng(location.state.data.lat, location.state.data.lng),
@@ -54,10 +53,8 @@ export default function Restaurants() {
   }, [])
 
   useEffect(() => {
-    console.log(countRender)
     if(countRender > 0) {
-      console.log('reset!')
-      console.log(map)
+      markers[0].marker.setMap(null)
       navigator(`/restaurants`)
       initMarkers()
     }
@@ -93,7 +90,7 @@ export default function Restaurants() {
   /**
    * marker
    */
-  const addMarker = (data) => {
+  const addMarker = (data, type=undefined) => {
     if(!data?.title) {
       data = {
         title: '추가된 데이터' + (i++),
@@ -103,7 +100,8 @@ export default function Restaurants() {
       }
     }
 
-    const size = 32
+    let size = 32
+    if(type === "search") size = 64
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(data.lat, data.lng),
       image: new kakao.maps.MarkerImage(categoryImg[data.category], new kakao.maps.Size(size, size)),
@@ -172,14 +170,14 @@ export default function Restaurants() {
   const showDetail = (map, marker, category) => {
     return () => {
       map.panTo(marker.getPosition())
-      const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(32, 32))
-      const reactImg = new kakao.maps.MarkerImage(new URL('@/assets/react.svg', import.meta.url).href, new kakao.maps.Size(18, 18))
-
-      marker.setImage(reactImg)
+      
+      const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(64, 64))
+      marker.setImage(img)
 
       setMarkerDetail((prevState) => {
         return { 
           ...prevState, 
+          marker,
           position: marker.getPosition(),
           title: marker.getTitle(),
           category: category
