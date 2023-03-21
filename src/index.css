@@ -100,3 +100,12 @@ button {
 small {
   color: gray;
 }
+
+input, textarea {
+  outline: none;
+  border: 1px solid #c7c7c7;
+}
+
+input:focus {
+  outline: none
+}

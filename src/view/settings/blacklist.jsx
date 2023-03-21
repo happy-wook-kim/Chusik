@@ -1,4 +1,4 @@
-export default function setBlacklist() {
+export default function SetBlacklist() {
 
   return (
     <div>
