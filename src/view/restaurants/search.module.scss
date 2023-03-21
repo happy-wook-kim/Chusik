@@ -1,36 +1,74 @@
+$--border-color : rgb(240, 240, 240);
+
 .search {
   display: grid;
   grid-template-areas: 
     "text"
-    "list";
-
+    "guide"
+    "result";
   &__input {
     display: grid;
     grid-template-areas: 
       "input btn";
     grid-template-columns: 1fr auto;
     border: 1px solid rgb(230, 230, 230);
-
     input {
       grid-area: input;
       border: 0px;
       padding: 10px 20px;
     }
-
     button {
       grid-area: btn;
       border: 0px;
       padding: 10px 20px;
-
       &:active{
         background-color: rgba(243, 243, 243, 0.2);
         box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
         position: relative;
         top:1px;
       }
-
       img{
         width: 18px;
+      }
+    }
+  }
+  &__guide {
+    grid-area: guide;
+    margin: 10px 0;
+  }
+  &__results{
+    grid-area: result;
+    display: grid;
+    max-height: 80vh;
+    overflow: auto;
+    &__result {
+      display: grid;
+      grid-template-areas: 
+        "img name"
+        "location location";
+      grid-template-columns: auto 1fr;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      gap: 3px 7px;
+      padding: 10px;
+      border: 1px solid $--border-color;
+      border-bottom: none;
+      cursor: pointer;
+      &:last-child {
+        border-bottom: 1px solid $--border-color;
+      }
+      img {
+        width: 20px;
+        grid-area: img;
+        pointer-events: none;
+      }
+      span {
+        grid-area: name;
+        pointer-events: none;
+      }
+      small {
+        grid-area: location;
+        pointer-events: none;
       }
     }
   }

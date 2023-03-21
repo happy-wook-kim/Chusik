@@ -5,12 +5,12 @@ import store from "@/assets/store.svg"
 import coffee from "@/assets/coffee.svg"
 import all from "@/assets/all.svg"
 import search from "@/assets/search.svg"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, position
+  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087]
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   let [map, setMap] = useState({})
   let [markers, setMarkers] = useState([])
@@ -20,32 +20,47 @@ export default function Restaurants() {
     category: '',
   })
   const navigator = useNavigate()
+  const location = useLocation()
   // const size = {
   //   width: '480px',
   //   height: 'calc(100vh - 60px)',
   // }
 
   useEffect(()=>{
+    if(location.state) getQuery()
     kakao.maps.load(() => {
-      position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
+      position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
       map = initMap(position)
       setMap(() => {
         return map
       })
+      if(location.state){
+        const marker = location.state.data
+        addMarker(marker)
+        setMarkerDetail(() => {
+          return { 
+            position: new kakao.maps.LatLng(location.state.data.lat, location.state.data.lng),
+            title: location.state.data.title,
+            category: location.state.data.category,
+            mode: 'search'
+          }
+        })
+      }else {
+        markerData.forEach((marker) => {
+          addMarker(marker)
+        })
+        coffeeData.forEach((marker) => {
+          addMarker(marker)
+        })
+        storeData.forEach((marker) => {
+          addMarker(marker)
+        })
+        
+        kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
+          addMarker(mouseEvent.latLng)
+        })
+      }
 
-      markerData.forEach((marker) => {
-        addMarker(marker)
-      })
-      coffeeData.forEach((marker) => {
-        addMarker(marker)
-      })
-      storeData.forEach((marker) => {
-        addMarker(marker)
-      })
-      
-      kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-        addMarker(mouseEvent.latLng)
-      })
     })
   }, [])
 
@@ -163,8 +178,15 @@ export default function Restaurants() {
   }
 
   const searchRestaurant = () => {
-    console.log("??")
     navigator(`/restaurants/search`)
+  }
+
+  /**
+   * =를 만나면 앞을 key, 뒤를 value. 단, &를 만나기 전까지
+   */
+  const getQuery = () => {
+    if(location.state?.data?.lat) latlng[0] = location.state?.data?.lat
+    if(location.state?.data?.lng) latlng[1] = location.state?.data?.lng
   }
 
   return (
