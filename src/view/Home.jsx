@@ -1,11 +1,10 @@
-import { Link, Navigate } from "react-router-dom";
-import { redirect } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigator = useNavigate()
 
-  return(
-    <div>
-      <Navigate to="/restaurants" />
-    </div>
-  )
+  useEffect(() => {
+    navigator('/restaurants', { replace: true })
+  }, [])
 }

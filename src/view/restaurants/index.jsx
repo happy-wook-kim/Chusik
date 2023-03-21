@@ -20,15 +20,15 @@ export default function Restaurants() {
     category: '',
   })
   const navigator = useNavigate()
-  const size = {
-    width: '480px',
-    height: 'calc(100vh - 60px)',
-  }
+  // const size = {
+  //   width: '480px',
+  //   height: 'calc(100vh - 60px)',
+  // }
 
   useEffect(()=>{
     kakao.maps.load(() => {
       position = new kakao.maps.LatLng(37.498080946822995, 127.02793242136087)
-      map = initMap(position, size)
+      map = initMap(position)
       setMap(() => {
         return map
       })
@@ -49,14 +49,11 @@ export default function Restaurants() {
     })
   }, [])
 
-  const initMap = (position, size) => {
+  const initMap = (position) => {
     const background = document.querySelector('#loading_background')
     const loading = document.querySelector('#loading')
     background.removeAttribute('active')
     loading.removeAttribute('active')
-
-    sectionMap.current.style.width = size.width
-    sectionMap.current.style.height = size.height
 
     const options = {
       center: position,
