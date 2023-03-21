@@ -14,6 +14,8 @@ import SetAccount from './view/settings/account'
 import SetFavorite from './view/settings/favorite'
 import SetBlacklist from './view/settings/blacklist'
 
+document.querySelector("body").style.height = window.innerHeight + "px"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
     <BrowserRouter>

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import styles from "./search.module.scss"
+import searchIcon from "@/assets/search.svg"
 
 export default function Search() {
   const [searchText, setText] = useState("")
@@ -35,7 +36,9 @@ export default function Search() {
       <form className={styles.search__input} onSubmit={search}>
         <input value={searchText} 
           onInput={textSearch}/>
-        <button onClick={search}></button>
+        <button onClick={search}>
+          <img src={searchIcon}/>
+        </button>
       </form>
       {searchText.length > 0 &&
       <div>

@@ -97,6 +97,17 @@ button {
   color: #595959;
 }
 
+button:active {
+  background-color: rgba(243, 243, 243, 0.2);
+  box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+  position: relative;
+  top:1px;
+}
+
+button:focus {
+  outline: none;
+}
+
 small {
   color: gray;
 }

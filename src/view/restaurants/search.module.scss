@@ -1,9 +1,30 @@
 .search {
   display: grid;
   grid-template-areas: 
-    "input";
+    "text"
+    "list";
 
   &__input {
+    display: grid;
+    grid-template-areas: 
+      "input btn";
+    grid-template-columns: 1fr auto;
+    border: 1px solid rgb(230, 230, 230);
 
+    input {
+      grid-area: input;
+      border: 0px;
+      padding: 10px 20px;
+    }
+
+    button {
+      grid-area: btn;
+      border: 0px;
+      padding: 10px 20px;
+
+      img{
+        width: 18px;
+      }
+    }
   }
 }
