@@ -10,7 +10,7 @@ import MarekrDetail from "@/components/common/markerDetail"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087], searchedMarker
+  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, clickedMarker = {}
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
@@ -168,11 +168,16 @@ export default function Restaurants() {
   }
 
   const showDetail = (map, marker, category) => {
-    return () => {
+    return () => {  
       map.panTo(marker.getPosition())
       
       const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(64, 64))
       marker.setImage(img)
+
+      if(clickedMarker?.marker) {
+        const orgImg = new kakao.maps.MarkerImage(categoryImg[clickedMarker.category], new kakao.maps.Size(32, 32))
+        clickedMarker.marker.setImage(orgImg)
+      }
 
       setMarkerDetail((prevState) => {
         return { 
@@ -183,6 +188,8 @@ export default function Restaurants() {
           category: category
         }
       })
+      clickedMarker['marker'] = marker
+      clickedMarker['category'] = category
     }
   }
 
