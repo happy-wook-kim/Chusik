@@ -13,6 +13,7 @@ import Favorites from './view/favorites'
 import SetAccount from './view/settings/account'
 import SetFavorite from './view/settings/favorite'
 import SetBlacklist from './view/settings/blacklist'
+import SetPriority from './view/settings/priority'
 
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={'/favorites'} element={<Favorites />} />
           <Route path={'/settings'} element={<Settings />} />
           <Route path={'/settings/account'} element={<SetAccount />} />
+          <Route path={'/settings/priority'} element={<SetPriority />} />
           <Route path={'/settings/favorite'} element={<SetFavorite />} />
           <Route path={'/settings/blacklist'} element={<SetBlacklist />} />
           <Route path={'/*'} element={<NotFound />} />

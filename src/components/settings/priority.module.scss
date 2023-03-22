@@ -1,0 +1,34 @@
+.priority {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 6px;
+  border: 1px solid rgb(201, 201, 201);
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  img[alt="icon"] {
+    width: 30px;
+    pointer-events: none;
+    margin: 5px 0px 10px;
+  }
+
+  span{
+    font-size: 0.9rem;
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  &:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+}
