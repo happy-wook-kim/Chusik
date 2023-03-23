@@ -1,6 +1,6 @@
 import backImg from "@/assets/back.svg"
 import { useNavigate } from "react-router-dom"
-import styles from "./backButton.scss"
+import "./backButton.scss"
 
 export default function backButton() {
   const navigator = useNavigate()

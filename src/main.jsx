@@ -26,22 +26,20 @@ window.addEventListener('resize', () => {
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path={'/'} element={<BasicLayout />}>
-          <Route path={'/'} element={<Home />} />
-          <Route path={'/restaurants'} element={<Restaurants />} />
-          <Route path={'/restaurants/search'} element={<RestaurantsSearch />} />
-          <Route path={'/favorites'} element={<Favorites />} />
-          <Route path={'/settings'} element={<Settings />} />
-          <Route path={'/settings/account'} element={<SetAccount />} />
-          <Route path={'/settings/priority'} element={<SetPriority />} />
-          <Route path={'/settings/favorite'} element={<SetFavorite />} />
-          <Route path={'/settings/blacklist'} element={<SetBlacklist />} />
-          <Route path={'/*'} element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  // </React.StrictMode>,
+  <BrowserRouter>
+    <Routes>
+      <Route path={'/'} element={<BasicLayout />}>
+        <Route path={'/'} element={<Home />} />
+        <Route path={'/restaurants'} element={<Restaurants />} />
+        <Route path={'/restaurants/search'} element={<RestaurantsSearch />} />
+        <Route path={'/favorites'} element={<Favorites />} />
+        <Route path={'/settings'} element={<Settings />} />
+        <Route path={'/settings/account'} element={<SetAccount />} />
+        <Route path={'/settings/priority'} element={<SetPriority />} />
+        <Route path={'/settings/favorite'} element={<SetFavorite />} />
+        <Route path={'/settings/blacklist'} element={<SetBlacklist />} />
+        <Route path={'/*'} element={<NotFound />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 )

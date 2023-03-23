@@ -54,8 +54,12 @@ button {
   width: 100%;
 }
 
-h1,h2,h3,h4,h5, p {
+h1,h3,h4,h5, p {
   margin: 0 !important;
+}
+
+h2 {
+  margin: 1px 0 0 !important
 }
 
 ul {
@@ -91,4 +95,10 @@ input, textarea {
 
 input:focus {
   outline: none
+}
+
+.header {
+  display: flex;
+  column-gap: 13px;
+  align-items: center;
 }

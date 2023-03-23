@@ -1,7 +1,8 @@
 import styles from './priority.module.scss'
-import Priority from '../../components/settings/priority'
+import Priority from '@/components/settings/priority'
 import { useRef, useState } from 'react';
-import BackButton from '../../components/common/backButton';
+import BackButton from '@/components/common/backButton';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 export default function SetPriority() {
   const [datas, setData] = useState([
@@ -15,24 +16,29 @@ export default function SetPriority() {
     {title: '제로 페이', img: new URL('@/assets/pay.svg', import.meta.url).href},
   ])
 
+  const onDragEnd = () => {
+
+  }
 
   return (
     <div>
-      <section className={styles.header}>
+      <section className="header">
         <BackButton />
-        <h2>어떤 기준으로 추천할까요?</h2>
+        <h2>내가 좋아하는 식당은?</h2>
       </section>
-      <div className={styles.priority}>
-        {datas.map((data,i) => 
-          <Priority 
-            key={data.title}
-            priority={data}
-            index={i}
-            datas={datas}
-            setData={setData}
-          />
-        )}
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className={styles.priority}>
+            {datas.map((data,i) => 
+              <Priority 
+                key={data.title}
+                priority={data}
+                index={i}
+                datas={datas}
+                setData={setData}
+              />
+            )}
+        </div>
+      </DragDropContext>
     </div>
   )
 }
