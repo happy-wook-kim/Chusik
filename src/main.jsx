@@ -5,8 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './scss/normalize.scss'  
 import NotFound from './layout/NotFound'
 import Home from './view/Home'
-import Restaurants from './view/restaurants'
-import RestaurantsSearch from './view/restaurants/search'
+import Restaurants from './view/map'
+import RestaurantsSearch from './view/map/search'
 import BasicLayout from './layout/BasicLayout'
 import Settings from './view/settings'
 import Favorites from './view/favorites'
@@ -30,8 +30,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path={'/'} element={<BasicLayout />}>
         <Route path={'/'} element={<Home />} />
-        <Route path={'/restaurants'} element={<Restaurants />} />
-        <Route path={'/restaurants/search'} element={<RestaurantsSearch />} />
+        <Route path={'/map'} element={<Restaurants />} />
+        <Route path={'/map/search'} element={<RestaurantsSearch />} />
         <Route path={'/favorites'} element={<Favorites />} />
         <Route path={'/settings'} element={<Settings />} />
         <Route path={'/settings/account'} element={<SetAccount />} />

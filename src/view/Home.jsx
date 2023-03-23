@@ -5,6 +5,6 @@ export default function Home() {
   const navigator = useNavigate()
 
   useEffect(() => {
-    navigator('/restaurants', { replace: true })
+    navigator('/map', { replace: true })
   }, [])
 }

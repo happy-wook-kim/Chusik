@@ -45,7 +45,7 @@ export default function Search() {
     const target = e.target
     const index = target.getAttribute('item-index')
     const item = result[index]
-    navigator(`/restaurants?lat=${item.lat}&lng=${item.lng}`, { state: { data: item}})
+    navigator(`/map?lat=${item.lat}&lng=${item.lng}`, { state: { data: item}})
   }
 
   return (

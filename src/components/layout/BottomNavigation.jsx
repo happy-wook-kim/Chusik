@@ -11,7 +11,7 @@ export default function BottomNavigation() {
       value: false,
       title: '식당 찾기',
       src: new URL('@/assets/map.svg', import.meta.url).href,
-      url: '/restaurants'
+      url: '/map'
     },
     {
       index: 1,

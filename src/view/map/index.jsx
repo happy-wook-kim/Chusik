@@ -1,4 +1,4 @@
-import styles from "./restaurant.module.scss"
+import styles from "./map.module.scss"
 import { useEffect, useRef, useState } from 'react'
 import { markerData, coffeeData, storeData, categoryImg } from "@/data/markerData";
 import store from "@/assets/store.svg"
@@ -55,7 +55,7 @@ export default function Restaurants() {
   useEffect(() => {
     if(countRender > 0) {
       markers[0].marker.setMap(null)
-      navigator(`/restaurants`)
+      navigator(`/map`)
       initMarkers()
     }
   }, [reset])
@@ -194,7 +194,7 @@ export default function Restaurants() {
   }
 
   const searchRestaurant = () => {
-    navigator(`/restaurants/search`)
+    navigator(`./search`)
   }
 
   /**
