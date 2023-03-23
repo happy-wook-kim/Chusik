@@ -5,7 +5,7 @@ export default function priority({ priority, index, datas, setData }) {
   const section = useRef()
   const [myIndex, setIndex] = useState(0)
   const [targetIndex, setTargetIndex] = useState(0)
-  const [shifting, setShifting] = useState(false)
+  const [shifting, setShifting] = useState(true)
 
   const onDragStart = (e) => {
     console.log('DS', datas)
@@ -19,16 +19,10 @@ export default function priority({ priority, index, datas, setData }) {
     const index = e.target.getAttribute('item-index')
     if(index !== myIndex){
       console.log('targetIndex: ', index)
-      setTargetIndex(index)    
-      console.log(myIndex, targetIndex)
-      const data = datas
-      const item = data.splice(section.current, 1)
-      data.splice(targetIndex, 0, item[0])
-      setData(() => {
-        return [
-          ...data
-        ]
-      })  
+      setTargetIndex(index)   
+      const item = datas.splice(myIndex, 1)
+      datas.splice(targetIndex, 0, item[0])
+      setData((prev) => [...prev])
     }
   }
 
@@ -37,7 +31,7 @@ export default function priority({ priority, index, datas, setData }) {
   }
 
   const onDragEnd = () => {
-
+    setShifting(true)
   }
 
   return (

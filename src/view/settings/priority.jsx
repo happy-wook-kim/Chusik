@@ -1,6 +1,7 @@
 import styles from './priority.module.scss'
 import Priority from '../../components/settings/priority'
 import { useRef, useState } from 'react';
+import BackButton from '../../components/common/backButton';
 
 export default function SetPriority() {
   const [datas, setData] = useState([
@@ -14,9 +15,13 @@ export default function SetPriority() {
     {title: '제로 페이', img: new URL('@/assets/pay.svg', import.meta.url).href},
   ])
 
+
   return (
     <div>
-      <h2>어떤 기준으로 추천할까요?</h2>
+      <section className={styles.header}>
+        <BackButton />
+        <h2>어떤 기준으로 추천할까요?</h2>
+      </section>
       <div className={styles.priority}>
         {datas.map((data,i) => 
           <Priority 

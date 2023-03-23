@@ -1,6 +1,12 @@
-
+import { useEffect } from "react"
+import styles from "./favorite.module.scss"
 
 export default function Favorites() {
+
+  useEffect(() => {
+    const backButton = document.querySelector('.backButton')
+    console.log(backButton)
+  }, [])
 
 
   return (
