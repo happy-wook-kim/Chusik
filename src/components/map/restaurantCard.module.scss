@@ -55,19 +55,23 @@ $--height: 60%;
       font-size: 0.9rem;
     }
     small {
-      // white-space: normal;
       display: -webkit-box;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
+      height: fit-content;
       overflow: hidden;
-      text-overflow: ellipsis;
 
-      // @media (min-height: 280px) {
-      //   -webkit-line-clamp: 1;
-      // }
-
+      @media (min-height: 280px) {
+        -webkit-line-clamp: 1;
+      }
       @media (min-height: 666px) {
         -webkit-line-clamp: 2;
+      }
+      @media (min-height: 740px) {
+        -webkit-line-clamp: 3;
+      }
+      @media (min-height: 826px) {
+        -webkit-line-clamp: 4;
       }
     }
   }
