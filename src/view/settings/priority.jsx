@@ -2,7 +2,6 @@ import styles from './priority.module.scss'
 import Priority from '@/components/settings/priority'
 import { useRef, useState } from 'react';
 import BackButton from '@/components/common/backButton';
-import { DragDropContext } from 'react-beautiful-dnd';
 
 export default function SetPriority() {
   const [datas, setData] = useState([
