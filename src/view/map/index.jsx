@@ -1,12 +1,14 @@
 import styles from "./map.module.scss"
 import { useEffect, useRef, useState } from 'react'
-import { markerData, coffeeData, storeData, categoryImg } from "@/data/markerData";
+import { markerData, coffeeData, storeData, categoryImg } from "@/data/markerData"
 import store from "@/assets/store.svg"
 import coffee from "@/assets/coffee.svg"
 import all from "@/assets/all.svg"
 import search from "@/assets/search.svg"
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"
 import MarekrDetail from "@/components/common/markerDetail"
+import { restaurantsData } from "@/data/restaurantData"
+import RestaurantCard from "@/components/map/restaurantCard"
 
 export default function Restaurants() {    
   const { kakao } = window
@@ -15,15 +17,17 @@ export default function Restaurants() {
   const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
   let [markers, setMarkers] = useState([])
-  let [reset, setReset] = useState(false)
-  let [countRender, setCounter] = useState(0)
+  const [reset, setReset] = useState(false)
+  const [countRender, setCounter] = useState(0)
   const [markerDetail, setMarkerDetail] = useState({
     title: '',
     position: '',
     category: '',
   })
+  const [suggestion, setSuggestion] = useState([])
 
   useEffect(()=>{
+    setSuggestion(restaurantsData)
     if(location.state) getQuery()
     kakao.maps.load(() => {
       position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
@@ -48,7 +52,6 @@ export default function Restaurants() {
           addMarker(mouseEvent.latLng)
         })
       }
-
     })
   }, [])
 
@@ -212,11 +215,18 @@ export default function Restaurants() {
     }
   }
 
+  const closeSuggestion = (data) => {
+    setSuggestion([...data])
+  }
+
   return (
     <div>
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" ref={sectionMap}/>
+      {suggestion?.map((data) => 
+        <RestaurantCard listHandler={closeSuggestion} list={suggestion} info={data} key={data.title}/>
+      )}
       <div className={styles.category} ref={category}>
         <ul>
           <li id="all" active="" onClick={changeMarker}>
