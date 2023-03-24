@@ -1,8 +1,10 @@
+@import "@/scss/variables.scss";
+
 .backButton {
   cursor: pointer;
   width: 32px;
   height: 32px;
-  background-color: rgb(242, 242, 242);
+  background-color: $--light-gray;
   border: 1px solid rgba(255,255,255,0);
   border-radius: 50%;
   padding: 5px;

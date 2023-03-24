@@ -1,15 +1,15 @@
-$--border-color : rgb(240, 240, 240);
+@import "@/scss/variables.scss";
 
 .menu {
   display: flex;
-  border: 1px solid $--border-color;
+  border: 1px solid $--light-gray;
   border-bottom: none;
   padding: 10px 12px;
   gap: 0px 7px;
   cursor: pointer;
 
   &:last-child {
-    border-bottom: 1px solid $--border-color;
+    border-bottom: 1px solid $--light-gray;
   }
 
   &__img {

@@ -20,6 +20,12 @@ export default function restaurantCard({ list, listHandler, info }) {
     listHandler(data)
   }
 
+  const agree = () => {
+    const data = list
+    data.splice((data.length - 1),1)
+    listHandler(data)
+  }
+
   return (
     <section className={styles.restaurantCard} ref={card}>
       <img src={x} alt="close" onClick={close}/>
@@ -30,8 +36,8 @@ export default function restaurantCard({ list, listHandler, info }) {
         <small>{info.desc}</small>
       </div>
       <div className={styles.restaurantCard__btn}>
-        <button className={styles.restaurantCard__btn__disagree}>가기 싫다</button>
-        <button className={styles.restaurantCard__btn__agree}>가고 싶다</button>
+        <button className={styles.restaurantCard__btn__disagree} onClick={close}>가기 싫다</button>
+        <button className={styles.restaurantCard__btn__agree} onClick={agree}>가고 싶다</button>
       </div>
     </section>
   )
