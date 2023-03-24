@@ -1,29 +1,20 @@
 import { useEffect, useRef } from "react"
 import styles from "./restaurantCard.module.scss"
 
-export default function restaurantCard({ list, listHandler, info }) {
+export default function restaurantCard({ list, setList, info }) {
   const x = new URL('@/assets/x.svg', import.meta.url).href
   const card = useRef()
-
-  // useEffect(() => {
-  //   const height = window.innerHeight
-  //   const textDiv = card.current.querySelector('#textDiv')
-  //   console.log(textDiv)
-  //   if(height < 700) {
-  //     textDiv.style.paddingTop = "15px"
-  //   }
-  // }, [])
 
   const close = () => {
     const data = list
     data.splice((data.length - 1),1)
-    listHandler(data)
+    setList(data)
   }
 
   const agree = () => {
     const data = list
     data.splice((data.length - 1),1)
-    listHandler(data)
+    setList(data)
   }
 
   return (

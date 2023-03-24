@@ -25,7 +25,6 @@ export default function SetPriority() {
         <BackButton />
         <h2>내가 좋아하는 식당은?</h2>
       </section>
-      <DragDropContext onDragEnd={onDragEnd}>
         <div className={styles.priority}>
             {datas.map((data,i) => 
               <Priority 
@@ -37,7 +36,6 @@ export default function SetPriority() {
               />
             )}
         </div>
-      </DragDropContext>
     </div>
   )
 }

@@ -9,32 +9,34 @@ import { useLocation, useNavigate } from "react-router-dom"
 import MarekrDetail from "@/components/common/markerDetail"
 import { restaurantsData } from "@/data/restaurantData"
 import RestaurantCard from "@/components/map/restaurantCard"
+import GPSButton from "@/components/map/gpsButton"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, position, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, clickedMarker = {}
+  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, clickedMarker = {}
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
+  let [position, setPosition] = useState({})
   let [markers, setMarkers] = useState([])
   const [reset, setReset] = useState(false)
   const [countRender, setCounter] = useState(0)
-  const [markerDetail, setMarkerDetail] = useState({
+  let [markerDetail, setMarkerDetail] = useState({
     title: '',
     position: '',
     category: '',
   })
   const [suggestion, setSuggestion] = useState([])
+  const markerDetailRef = useRef()
 
   useEffect(()=>{
     setSuggestion(restaurantsData)
     if(location.state) getQuery()
     kakao.maps.load(() => {
-      position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
+      position = initPosition()
+      setPosition(position)
       map = initMap(position)
-      setMap(() => {
-        return map
-      })
+      setMap(map)
       if(location.state){
         searchedMarker = location.state.data
         addMarker(searchedMarker, "search")
@@ -58,12 +60,13 @@ export default function Restaurants() {
   useEffect(() => {
     if(countRender > 0) {
       markers[0].marker.setMap(null)
+      markers.splice(0, 1)
       navigator(`/map`)
       initMarkers()
     }
   }, [reset])
 
-  const initMap = (position) => {
+  const initMap = () => {
     const background = document.querySelector('#loading_background')
     const loading = document.querySelector('#loading')
     background.removeAttribute('active')
@@ -72,10 +75,13 @@ export default function Restaurants() {
     const options = {
       center: position,
       level: 4,
-    };
-    const map = new kakao.maps.Map(sectionMap.current, options);
+    }
     
-    return map 
+    return new kakao.maps.Map(sectionMap.current, options) 
+  }
+
+  const initPosition = () => {
+    return new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
   }
 
   const initMarkers = () => {
@@ -142,16 +148,7 @@ export default function Restaurants() {
       }
     }
 
-    if(id !== markerDetail.category && id !== 'all') {
-      setMarkerDetail((prevState) => {
-        return { 
-          ...prevState, 
-          position: "",
-          title: undefined,
-          category: undefined
-        }
-      }) 
-    }
+    markerDetailRef.current.close()
   }
 
   const changeMarker = (e) => {
@@ -224,9 +221,9 @@ export default function Restaurants() {
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" ref={sectionMap}/>
-      {suggestion?.map((data) => 
-        <RestaurantCard listHandler={closeSuggestion} list={suggestion} info={data} key={data.title}/>
-      )}
+      {/* {suggestion?.map((data) => 
+        <RestaurantCard setList={closeSuggestion} list={suggestion} info={data} key={data.title}/>
+      )} */}
       <div className={styles.category} ref={category}>
         <ul>
           <li id="all" active="" onClick={changeMarker}>
@@ -250,7 +247,8 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <MarekrDetail marker={markerDetail} resetState={resetState}/>
+      <GPSButton setPosition={setPosition}/>
+      <MarekrDetail marker={markerDetail} resetState={resetState} ref={markerDetailRef}/>
     </div>
   )
 }

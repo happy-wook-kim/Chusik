@@ -16,7 +16,7 @@ export const tmp = [
   {
     id: 3,
     title: "하남돼지집",
-    lat: 37.490842424005616,
+    lat: 37.492842424005616,
     lng: 127.030583774403176,
     category: 'restaurant'
   },
