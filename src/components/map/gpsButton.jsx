@@ -1,15 +1,15 @@
 import styles from "./gpsButton.module.scss"
 import marker from "@/assets/location.svg"
 
-export default function gpsButton ({ setPosition }) {
+export default function gpsButton ({ setGPS }) {
 
 
-  const clicked = () => {
-    setPosition()
+  const clickedGPS = () => {
+    setGPS()
   }
 
   return (
-    <button className={styles.gpsButton} onClick={clicked}>
+    <button className={styles.gpsButton} onClick={clickedGPS}>
       <img src={marker} alt="gps"/>
     </button>
   )
