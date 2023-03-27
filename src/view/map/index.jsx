@@ -13,7 +13,7 @@ import GPSButton from "@/components/map/gpsButton"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, clickedMarker = {}
+  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
@@ -21,19 +21,24 @@ export default function Restaurants() {
   let [markers, setMarkers] = useState([])
   const [reset, setReset] = useState(false)
   const [countRender, setCounter] = useState(0)
-  let [markerDetail, setMarkerDetail] = useState({
-    title: '',
+  const [markerDetail, setMarkerDetail] = useState({
+    title: undefined,
     position: '',
-    category: '',
+    category: undefined,
+  })
+  const [clickedMarker, setClickedMarker] = useState({
+    marker: undefined,
+    category: undefined
   })
   const [suggestion, setSuggestion] = useState([])
+  const [GPSState, setGPS] = useState(false)
   const markerDetailRef = useRef()
 
   useEffect(()=>{
     setSuggestion(restaurantsData)
     if(location.state) getQuery()
     kakao.maps.load(() => {
-      position = initPosition()
+      position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
       setPosition(position)
       map = initMap(position)
       setMap(map)
@@ -66,6 +71,32 @@ export default function Restaurants() {
     }
   }, [reset])
 
+  useEffect(() => {
+    if(GPSState) {
+      const yourLocation = new kakao.maps.LatLng(37.499080946822995, 127.03593242136087)
+      map.panTo(yourLocation)
+      setGPS(false)
+    }
+  }, [GPSState])
+
+  useEffect(() => {
+    if(markerDetail?.category){
+      console.log(markerDetail?.marker?.getTitle())
+      console.log(clickedMarker?.marker?.getTitle())
+      setClickedMarker(() => {
+        return {
+          marker: markerDetail.marker,
+          category: markerDetail.category
+        }
+      })
+      
+      if(clickedMarker?.marker) {
+        const orgImg = new kakao.maps.MarkerImage(categoryImg[clickedMarker.category], new kakao.maps.Size(32, 32))
+        clickedMarker.marker.setImage(orgImg)
+      }
+    }
+  }, [markerDetail])
+
   const initMap = () => {
     const background = document.querySelector('#loading_background')
     const loading = document.querySelector('#loading')
@@ -79,11 +110,7 @@ export default function Restaurants() {
     
     return new kakao.maps.Map(sectionMap.current, options) 
   }
-
-  const initPosition = () => {
-    return new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
-  }
-
+  
   const initMarkers = () => {
     markerData.forEach((marker) => {
       addMarker(marker)
@@ -109,8 +136,7 @@ export default function Restaurants() {
       }
     }
 
-    let size = 32
-    if(type === "search") size = 64
+    let size = type === "search" ? 48 : 32
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(data.lat, data.lng),
       image: new kakao.maps.MarkerImage(categoryImg[data.category], new kakao.maps.Size(size, size)),
@@ -149,6 +175,12 @@ export default function Restaurants() {
     }
 
     markerDetailRef.current.close()
+    setClickedMarker(() => {
+      return {
+        marker: undefined,
+        category: undefined
+      }
+    })
   }
 
   const changeMarker = (e) => {
@@ -170,14 +202,9 @@ export default function Restaurants() {
   const showDetail = (map, marker, category) => {
     return () => {  
       map.panTo(marker.getPosition())
-      
-      const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(64, 64))
-      marker.setImage(img)
 
-      if(clickedMarker?.marker) {
-        const orgImg = new kakao.maps.MarkerImage(categoryImg[clickedMarker.category], new kakao.maps.Size(32, 32))
-        clickedMarker.marker.setImage(orgImg)
-      }
+      const img = new kakao.maps.MarkerImage(categoryImg[category], new kakao.maps.Size(48, 48))
+      marker.setImage(img)
 
       setMarkerDetail((prevState) => {
         return { 
@@ -188,8 +215,9 @@ export default function Restaurants() {
           category: category
         }
       })
-      clickedMarker['marker'] = marker
-      clickedMarker['category'] = category
+
+      // clickedMarker['marker'] = marker
+      // clickedMarker['category'] = category
     }
   }
 
@@ -198,6 +226,7 @@ export default function Restaurants() {
   }
 
   /**
+   * 검색을 통해 위치를 받을 때
    * =를 만나면 앞을 key, 뒤를 value. 단, &를 만나기 전까지
    */
   const getQuery = () => {
@@ -205,12 +234,23 @@ export default function Restaurants() {
     if(location.state?.data?.lng) latlng[1] = location.state?.data?.lng
   }
 
-  const resetState = () => {
+  /**
+   * 검색 이후 해당 상세화면을 종료했을 때
+   * 지도에 표기된 마커를 초기화 함
+   */
+  const resetMarkerDetailState = () => {
     if(!reset) {
       setCounter(countRender + 1)
       setReset(() => true)
     }
   }
+
+  /**
+   * GPS버튼 클릭했을 때
+   */
+  const clickedGPS = () => {
+    setGPS(true)
+  } 
 
   const closeSuggestion = (data) => {
     setSuggestion([...data])
@@ -247,8 +287,8 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <GPSButton setPosition={setPosition}/>
-      <MarekrDetail marker={markerDetail} resetState={resetState} ref={markerDetailRef}/>
+      <GPSButton setGPS={clickedGPS}/>
+      <MarekrDetail marker={markerDetail} resetState={resetMarkerDetailState} ref={markerDetailRef}/>
     </div>
   )
 }
