@@ -275,9 +275,9 @@ export default function Restaurants() {
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" ref={sectionMap}/>
-      {/* {suggestion?.map((data) => 
+      {suggestion?.map((data) => 
         <RestaurantCard setList={closeSuggestion} list={suggestion} info={data} key={data.title}/>
-      )} */}
+      )}
       <div className={styles.category} ref={category}>
         <ul>
           <li id="all" active="" onClick={changeMarker}>
