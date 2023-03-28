@@ -31,7 +31,11 @@ export default function Restaurants() {
     category: undefined
   })
   const [suggestion, setSuggestion] = useState([])
-  const [GPSState, setGPS] = useState(false)
+  const [GPSState, setGPS] = useState({
+    state: false,
+    lat: undefined,
+    lng: undefined
+  })
   const markerDetailRef = useRef()
 
   useEffect(()=>{
@@ -72,17 +76,20 @@ export default function Restaurants() {
   }, [reset])
 
   useEffect(() => {
-    if(GPSState) {
-      const yourLocation = new kakao.maps.LatLng(37.499080946822995, 127.03593242136087)
+    if(GPSState?.state) {
+      const yourLocation = new kakao.maps.LatLng(GPSState?.lat, GPSState?.lng)
       map.panTo(yourLocation)
-      setGPS(false)
+      setGPS((prev) => {
+        return {
+          ...prev,
+          state: false
+        }
+      })
     }
   }, [GPSState])
 
   useEffect(() => {
     if(markerDetail?.category){
-      console.log(markerDetail?.marker?.getTitle())
-      console.log(clickedMarker?.marker?.getTitle())
       setClickedMarker(() => {
         return {
           marker: markerDetail.marker,
@@ -248,8 +255,15 @@ export default function Restaurants() {
   /**
    * GPS버튼 클릭했을 때
    */
-  const clickedGPS = () => {
-    setGPS(true)
+  const clickedGPS = (lat, lng) => {
+    setGPS((prev) => {
+      return {
+        ...prev,
+        lat: lat,
+        lng: lng,
+        state: true
+      }
+    })
   } 
 
   const closeSuggestion = (data) => {
@@ -287,7 +301,7 @@ export default function Restaurants() {
           </li>
         </ul>
       </div>
-      <GPSButton setGPS={clickedGPS}/>
+      <GPSButton onClick={clickedGPS}/>
       <MarekrDetail marker={markerDetail} resetState={resetMarkerDetailState} ref={markerDetailRef}/>
     </div>
   )
