@@ -1,0 +1,4 @@
+user-agent: *
+Allow: /
+
+sitemap: https://chu.banpick.kr/sitemap.xml

@@ -16,7 +16,6 @@
   opacity: 0.85;
   transition: all 0.3s;
 
-  &:hover:not(:active),
   &:active {
     background-color: rgb(200, 200, 200);
     transition: all 0.3s;
