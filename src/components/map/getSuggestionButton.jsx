@@ -8,9 +8,9 @@ export default function getSuggestion ({ onClick }) {
   }
 
   return (
-    <div className={styles.suggestion_button} onClick={clickButton}>
+    <button className={styles.suggestion_button} onClick={clickButton}>
       <img src={suggestion} alt="suggestion" />  
-    </div>
+    </button>
   )
 }
 
