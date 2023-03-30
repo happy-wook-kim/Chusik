@@ -10,11 +10,13 @@ import MarekrDetail from "@/components/common/markerDetail"
 import { restaurantsData } from "@/data/restaurantData"
 import RestaurantCard from "@/components/map/restaurantCard"
 import GPSButton from "@/components/map/gpsButton"
+import SuggestionButton from "@/components/map/getSuggestionButton"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker
+  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, tmpRestaurantData = [...restaurantsData]
   const category = useRef(), tools = useRef(), sectionMap = useRef()
+  const markerDetailRef = useRef()
   const navigator = useNavigate(), location = useLocation()
   let [map, setMap] = useState({})
   let [position, setPosition] = useState({})
@@ -30,16 +32,15 @@ export default function Restaurants() {
     marker: undefined,
     category: undefined
   })
-  const [suggestion, setSuggestion] = useState([])
+  const [suggestions, setSuggestions] = useState([])
   const [GPSState, setGPS] = useState({
     state: false,
     lat: undefined,
     lng: undefined
   })
-  const markerDetailRef = useRef()
+  const [suggestionActive, setSuggestionActive] = useState(false)
 
   useEffect(()=>{
-    setSuggestion(restaurantsData)
     if(location.state) getQuery()
     kakao.maps.load(() => {
       position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
@@ -222,9 +223,6 @@ export default function Restaurants() {
           category: category
         }
       })
-
-      // clickedMarker['marker'] = marker
-      // clickedMarker['category'] = category
     }
   }
 
@@ -266,17 +264,28 @@ export default function Restaurants() {
     })
   } 
 
-  const closeSuggestion = (data) => {
-    setSuggestion([...data])
+  const clickedSuggestion = () => {
+    setSuggestions(tmpRestaurantData)
+    setSuggestionActive(true)
   }
+
+  const closeSuggestion = (data) => {
+    setSuggestions([...data])
+  }
+
+  useEffect(() => {
+    
+  })
 
   return (
     <div>
       <div id="loading_background" className={styles.loading_background} active=""></div>
       <div id="loading" className={styles.lds_roller} active=""><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <section className={styles.map} id="map" ref={sectionMap}/>
-      {suggestion?.map((data) => 
-        <RestaurantCard setList={closeSuggestion} list={suggestion} info={data} key={data.title}/>
+      
+      {suggestionActive &&
+      suggestions?.map((data) => 
+        <RestaurantCard setList={closeSuggestion} list={suggestions} info={data} key={data.title}/>
       )}
       <div className={styles.category} ref={category}>
         <ul>
@@ -303,6 +312,7 @@ export default function Restaurants() {
       </div>
       <GPSButton onClick={clickedGPS}/>
       <MarekrDetail marker={markerDetail} resetState={resetMarkerDetailState} ref={markerDetailRef}/>
+      <SuggestionButton onClick={clickedSuggestion} />
     </div>
   )
 }
