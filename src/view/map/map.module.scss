@@ -149,9 +149,6 @@
         width: 15px;
         height: 15px;
         pointer-events: none;
-        &[active] {
-          filter: invert(1);
-        }
       }
     
       span {
@@ -159,9 +156,6 @@
         font-size: 0.7rem;
         pointer-events: none;
         line-height: 1;
-        &[active] {
-          color: white;
-        }
       }
     
       &:hover:not([active]){
@@ -173,6 +167,12 @@
         box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
         position: relative;
         top:2px;
+        img {
+          filter: invert(1);
+        }
+        span {
+          color: white;
+        }
       }
     
       &[active] {
@@ -180,6 +180,12 @@
         box-shadow: 1px 1px 0 rgb(0,0,0,0.2);
         position: relative;
         top:2px;
+        img {
+          filter: invert(1);
+        }
+        span {
+          color: white;
+        }
       }
     }
   }

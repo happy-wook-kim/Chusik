@@ -14,7 +14,12 @@ import SuggestionButton from "@/components/map/getSuggestionButton"
 
 export default function Restaurants() {    
   const { kakao } = window
-  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, tmpRestaurantData = [...restaurantsData]
+  let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, tmpRestaurantData = [...restaurantsData], 
+  priorities = [
+    {id: 0, title: '맛', img: new URL('@/assets/taste.png', import.meta.url).href},
+    {id: 1, title: '가격', img: new URL('@/assets/money.svg', import.meta.url).href},
+    {id: 2, title: '위치', img: new URL('@/assets/location.svg', import.meta.url).href}
+  ]
   const category = useRef(), tools = useRef(), sectionMap = useRef()
   const markerDetailRef = useRef()
   const navigator = useNavigate(), location = useLocation()
@@ -204,7 +209,7 @@ export default function Restaurants() {
     target.querySelector('img').setAttribute('active','')
     target.querySelector('span').setAttribute('active','')
 
-    showMarkers(target.id);
+    // showMarkers(target.id);
   }
 
   const showDetail = (map, marker, category) => {
@@ -289,18 +294,17 @@ export default function Restaurants() {
       )}
       <div className={styles.category} ref={category}>
         <ul>
-          <li id="all" active="" onClick={changeMarker}>
-            <img src={all} active=""/>
-            <span active="">전체</span>
-          </li>
-          <li id="cafe" onClick={changeMarker}>
-            <img src={coffee} />
-            <span>카페</span>
-          </li>
-          <li id="store" onClick={changeMarker}>
-            <img src={store} />
-            <span>가게</span>
-          </li>
+          {priorities?.map((data) => {
+            return data.id === 0 ? 
+            <li id={data.id} active="" onClick={changeMarker} key={data.id}>
+              <img src={data.img} active=""/>
+              <span active="">{data.title}</span>
+            </li> : 
+            <li id={data.id} onClick={changeMarker} key={data.id}>
+              <img src={data.img} />
+              <span>{data.title}</span>
+            </li>
+          })}
         </ul>
       </div>
       <div className={styles.tools} ref={tools}>
