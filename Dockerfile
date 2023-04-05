@@ -1,17 +1,37 @@
-# 가져올 이미지를 정의
-FROM node:16.19.1
-ENV NODE_ENV=production
+## 테스트
+# FROM node:lts-alpine
 
-# 경로 설정하기
-WORKDIR /app
-# package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
-COPY ["package.json", "package-lock.json*", "./"]
-# 명령어 실행 (의존성 설치)
-RUN npm install
-# 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
-COPY . .
+# # install simple http server for serving static content
+# RUN npm install -g http-server
+
+# # make the 'app' folder the current working directory
+# WORKDIR /app
+
+# # copy both 'package.json' and 'package-lock.json' (if available)
+# COPY package*.json ./
+
+# # install project dependencies
+# RUN npm install
+
+# # copy project files and folders to the current working directory (i.e. 'app' folder)
+# COPY . .
+
+# # build app for production with minification
+# RUN npm run build
 
 # EXPOSE 8470
+# CMD [ "http-server", "dist" ]
 
-# npm start 스크립트 실행
-CMD ["npm", "run", "dev"]
+# build stage
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# production stage
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
