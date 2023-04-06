@@ -26,39 +26,39 @@ phases:
       # - aws s3 sync ./dist s3://s3.codepipeline-ap-northeast-2-37741801629
     # finally:
     #   - command
-reports:
-  report-group-name-or-arn:
-    files:
-      - location
-      - location
-    base-directory: location
-    discard-paths: no | yes
-    file-format: report-format
-artifacts:
-  files:
-    - location
-    - location
-  name: artifact-name
-  discard-paths: no | yes
-  base-directory: location
-  exclude-paths: excluded paths
-  enable-symlinks: no | yes
-  s3-prefix: prefix
-  secondary-artifacts:
-    artifactIdentifier:
-      files:
-        - location
-        - location
-      name: secondary-artifact-name
-      discard-paths: no | yes
-      base-directory: location
-    artifactIdentifier:
-      files:
-        - location
-        - location
-      discard-paths: no | yes
-      base-directory: location
-cache:
-  paths:
-    - path
-    - path
+# reports:
+#   report-group-name-or-arn:
+#     files:
+#       - location
+#       - location
+#     base-directory: location
+#     discard-paths: no | yes
+#     file-format: report-format
+# artifacts:
+#   files:
+#     - location
+#     - location
+#   name: artifact-name
+#   discard-paths: no | yes
+#   base-directory: location
+#   exclude-paths: excluded paths
+#   enable-symlinks: no | yes
+#   s3-prefix: prefix
+#   secondary-artifacts:
+#     artifactIdentifier:
+#       files:
+#         - location
+#         - location
+#       name: secondary-artifact-name
+#       discard-paths: no | yes
+#       base-directory: location
+#     artifactIdentifier:
+#       files:
+#         - location
+#         - location
+#       discard-paths: no | yes
+#       base-directory: location
+# cache:
+#   paths:
+#     - path
+#     - path
