@@ -1,0 +1,11 @@
+version: 0.1
+os: linux
+files:
+  - source: /
+    destination: /var/www/Chusik/test
+
+# permissions:
+#   - object: /var/www/Chusik/test
+#     owner: ubuntu
+
+# hooks:
