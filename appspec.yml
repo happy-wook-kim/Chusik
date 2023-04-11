@@ -3,3 +3,12 @@ os: linux
 files:
   - source: /
     destination: /var/www/Chusik/test
+hooks:
+  BeforeInstall:
+    - location: /var/www/Chusik/scripts/before.sh
+      timeout: 1200
+      runas: root
+  AfterInstall:
+    - location: /var/www/Chusik/scripts/after.sh
+      timeout: 600
+      runas: root
