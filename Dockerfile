@@ -22,16 +22,28 @@
 # EXPOSE 8470
 # CMD [ "http-server", "dist" ]
 
-# build stage
-FROM node:lts-alpine as build-stage
+# # build stage
+# FROM node:lts-alpine as build-stage
+# WORKDIR /app
+# COPY package*.json ./
+# RUN npm install
+# COPY . .
+# RUN npm run build
+
+# # production stage
+# FROM nginx:stable-alpine as production-stage
+# COPY --from=build-stage /app/dist /usr/share/nginx/html
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
+
+# npm run dev / npm run preview를 통해 개발환경 구축
+FROM node:lts
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+CMD ["npm", "run", "dev"]
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# npm run preview는 포트 설정 해야함.
+# RUN npm run build
+# CMD ["npm", "run", "preivew"]
