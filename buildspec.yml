@@ -20,12 +20,16 @@ phases:
       # - echo Build started on `date`
       - npm run build
   # post_build:
+  #   commands:
+  #     - printf '[{"name":"your.task.definition.name","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
     # run-as: Linux-user-name
     # on-failure: ABORT | CONTINUE
     # commands:
       # - aws s3 sync ./dist s3://s3.codepipeline-ap-northeast-2-37741801629
     # finally:
     #   - command
+# artifacts:
+#   files: imagedefinitions.json
 # reports:
 #   report-group-name-or-arn:
 #     files:

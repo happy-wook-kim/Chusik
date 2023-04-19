@@ -2,8 +2,8 @@
 
 .gpsButton {
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: $--button-width;
+  height: $--button-width;
   background-color: $--light-gray;
   border-radius: 50%;
   padding: 5px;
@@ -12,7 +12,7 @@
   position: absolute;
   left: 5%;
   bottom: 90px;
-  opacity: 0.85;
+  opacity: 0.95;
   transition: all 0.3s;
 
   &:active {

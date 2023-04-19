@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import styles from "./favorite.module.scss"
 
 export default function Favorites() {
@@ -8,20 +8,13 @@ export default function Favorites() {
     {title: '사사삼식당', writer: '3번', icon: '3.png',},
   ]
 
-  const restaurantData = useMemo(() => {
-    return {
-      title: data.title
-    }
-  }, [data])
-
   useEffect(() => {
-    console.log(restaurantData)
+    console.log(data)
   })
 
   return (
     <div>
       <h1>나만의 식당</h1>
-      {restaurantData.title}
     </div>
   )
 }
