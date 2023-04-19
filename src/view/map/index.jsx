@@ -103,7 +103,7 @@ export default function Restaurants() {
         }
       })
       
-      if(clickedMarker?.marker) {
+      if(clickedMarker?.marker && markerDetail.marker !== clickedMarker.marker) {
         const orgImg = new kakao.maps.MarkerImage(categoryImg[clickedMarker.category], new kakao.maps.Size(32, 32))
         clickedMarker.marker.setImage(orgImg)
       }
