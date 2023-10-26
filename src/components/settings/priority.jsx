@@ -1,49 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './priority.module.scss'
 
-export default function priority({ priority, index, datas, setData }) {
-  const section = useRef()
-  const [myIndex, setIndex] = useState(0)
-  const [targetIndex, setTargetIndex] = useState(0)
-  const [shifting, setShifting] = useState(true)
+export default function priority({ priority, index, enter  }) {
+  const dragItem = useRef()
+  const dragOverItem = useRef()
 
-  const onDragStart = (e) => {
-    console.log('DS', datas)
-    const index = e.target.getAttribute('item-index')
-    console.log('myIndex: ',index)
-    setIndex(index)
-    setShifting(true)
+  const dragStart = (e, position) => {
+    dragItem.current = position
   }
-
-  const onDragEnter = (e) => {
-    const index = e.target.getAttribute('item-index')
-    if(index !== myIndex){
-      console.log('targetIndex: ', index)
-      setTargetIndex(index)   
-      const item = datas.splice(myIndex, 1)
-      datas.splice(targetIndex, 0, item[0])
-      setData((prev) => [...prev])
-    }
-  }
-
-  const onDragOver = (e) => {
-    e.preventDefault()
-  }
-
-  const onDragEnd = () => {
-    setShifting(true)
-  }
+  const dragEnter = (e) => {
+    dragOverItem.current = parseInt(e.target.getAttribute('item-index'));
+    enter(dragOverItem.current)
+    console.log(dragOverItem.current)
+  };
 
   return (
-    <section
-      className={styles.priority}
-      draggable="true"
-      ref={section}
-      onDragStart={onDragStart}
-      onDragEnter={onDragEnter}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-      item-index={index}>
+    <section item-index={index} className={styles.priority} draggable 
+      onDragStart={(e) => dragStart(e, index)}
+      onDragEnter={(e) => dragEnter(e)}
+      onDragOver={(e) => e.preventDefault()}>
       <img src={priority.img} alt="icon"/>
       <span>{priority.title}</span>
     </section>
