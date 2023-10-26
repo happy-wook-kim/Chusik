@@ -18,13 +18,17 @@ export default function SetPriority() {
   const dragItem = useRef()
   const dragOverItem = useRef()
 
+  const dragStartHandler = (position) => {
+    dragItem.current = position;
+  }
+
   const dragEnterHandler = (position) => {
     dragOverItem.current = position;
     const copyListItems = [...datas];
     const dragItemContent = copyListItems[dragItem.current];
     copyListItems.splice(dragItem.current, 1);
     copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-    dragItem.current = dragOverItem.current;
+    // dragItem.current = dragOverItem.current;
     setData(copyListItems);
   }
 
@@ -40,7 +44,7 @@ export default function SetPriority() {
               key={i}
               priority={data}
               index={i}
-              datas={datas}
+              start={dragStartHandler}
               enter={dragEnterHandler}
             />
             

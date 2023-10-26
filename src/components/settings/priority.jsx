@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './priority.module.scss'
 
-export default function priority({ priority, index, enter  }) {
-  const dragItem = useRef()
-  const dragOverItem = useRef()
+export default function priority({ priority, index, start, enter  }) {
 
-  const dragStart = (e, position) => {
-    dragItem.current = position
+  const dragStart = (e) => {
+    start(parseInt(e.target.getAttribute('item-index')))
   }
   const dragEnter = (e) => {
-    dragOverItem.current = parseInt(e.target.getAttribute('item-index'));
-    enter(dragOverItem.current)
-    console.log(dragOverItem.current)
+    enter(parseInt(e.target.getAttribute('item-index')))
   };
 
   return (
@@ -19,8 +15,8 @@ export default function priority({ priority, index, enter  }) {
       onDragStart={(e) => dragStart(e, index)}
       onDragEnter={(e) => dragEnter(e)}
       onDragOver={(e) => e.preventDefault()}>
-      <img src={priority.img} alt="icon"/>
-      <span>{priority.title}</span>
+      <img src={priority?.img} alt="icon"/>
+      <span>{priority?.title}</span>
     </section>
   )
 }
