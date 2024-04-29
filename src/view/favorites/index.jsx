@@ -1,7 +1,11 @@
 import { useEffect } from "react"
 import styles from "./favorite.module.scss"
+import { selector, useRecoilValue } from "recoil"
+import { counterState } from "../../recoil/count";
 
 export default function Favorites() {
+  const count = useRecoilValue(counterState);
+
   const data = [
     {title: '일식당', writer: '1번', icon: '1.png',},
     {title: '이이식당', writer: '2번', icon: '2.png',},
@@ -15,6 +19,7 @@ export default function Favorites() {
   return (
     <div>
       <h1>나만의 식당</h1>
+      {count}
     </div>
   )
 }

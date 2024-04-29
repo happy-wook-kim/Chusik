@@ -11,9 +11,12 @@ import { restaurantsData } from "@/data/restaurantData"
 import RestaurantCard from "@/components/map/restaurantCard"
 import GPSButton from "@/components/map/gpsButton"
 import SuggestionButton from "@/components/map/getSuggestionButton"
+import { useRecoilState, useRecoilCallback } from 'recoil'
+import { counterState } from "../../recoil/count"
+import { API_KEY } from "../../../keys/kakao/secret"
 
 export default function Restaurants() {    
-  const { kakao } = window
+  // const { kakao } = window
   let i = 0, latlng = [37.498080946822995, 127.02793242136087], searchedMarker, tmpRestaurantData = [...restaurantsData], 
   priorities = [
     {id: 0, title: '맛', img: new URL('@/assets/taste.png', import.meta.url).href},
@@ -45,31 +48,57 @@ export default function Restaurants() {
   })
   const [suggestionActive, setSuggestionActive] = useState(false)
 
+  const [count, setCount] = useRecoilState(counterState)
+
+  const increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+
+  const someAsyncFunction = async (value) => {
+    return value + 1;
+  };
+  
+
+  const logCartItems = useRecoilCallback(
+    ({ snapshot, set }) => async () => {
+      const numItemsInCart = await snapshot.getPromise(counterState);
+      console.log('Items in cart: ', numItemsInCart);
+      const result = await someAsyncFunction(numItemsInCart);
+      set(counterState, result);
+  }, [counterState]);
+
   useEffect(()=>{
-    if(location.state) getQuery()
-    kakao.maps.load(() => {
-      position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
-      setPosition(position)
-      map = initMap(position)
-      setMap(map)
-      if(location.state){
-        searchedMarker = location.state.data
-        addMarker(searchedMarker, "search")
-        setMarkerDetail(() => {
-          return { 
-            position: new kakao.maps.LatLng(location.state.data.lat, location.state.data.lng),
-            title: location.state.data.title,
-            category: location.state.data.category,
-            mode: 'search'
-          }
-        })
-      }else {
-        initMarkers()
-        kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-          addMarker(mouseEvent.latLng)
-        })
-      }
-    })
+    const script = document.createElement("script");
+    script.src =
+      `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false`;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      if(location.state) getQuery()
+      kakao.maps.load(() => {
+        position = new kakao.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]))
+        setPosition(position)
+        map = initMap(position)
+        setMap(map)
+        if(location.state){
+          searchedMarker = location.state.data
+          addMarker(searchedMarker, "search")
+          setMarkerDetail(() => {
+            return { 
+              position: new kakao.maps.LatLng(location.state.data.lat, location.state.data.lng),
+              title: location.state.data.title,
+              category: location.state.data.category,
+              mode: 'search'
+            }
+          })
+        }else {
+          initMarkers()
+          kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
+            addMarker(mouseEvent.latLng)
+          })
+        }
+      })
+    };
+
   }, [])
 
   useEffect(() => {
@@ -197,6 +226,8 @@ export default function Restaurants() {
   }
 
   const changeMarker = (e) => {
+    // increment()
+    logCartItems()
     const target = e.target
     const li = category.current.querySelectorAll('li')
     li.forEach((child) => {
