@@ -4,7 +4,7 @@
 
 
 ***
-홈페이지 : http://chu.banpick.kr
+홈페이지 : https://chu.banpick.kr
 
 
 ```
